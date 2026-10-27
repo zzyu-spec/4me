@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owner(uid) {
+      return request.auth != null && request.auth.uid == uid
+        && request.auth.token.email_verified == true;
+    }
+    function validSnapshot() {
+      return request.resource.data.snapshot is map
+        && request.resource.data.snapshot.todos is list
+        && request.resource.data.snapshot.events is list
+        && request.resource.data.snapshot.routines is list
+        && request.resource.data.snapshot.journals is map;
+    }
+    match /users/{uid}/planner/current {
+      allow read: if owner(uid);
+      allow create: if owner(uid) && validSnapshot()
+        && request.resource.data.keys().hasOnly(['revision', 'snapshot', 'updated_at'])
+        && request.resource.data.revision == 1;
+      allow update: if owner(uid) && validSnapshot()
+        && request.resource.data.keys().hasOnly(['revision', 'snapshot', 'updated_at'])
+        && request.resource.data.revision == resource.data.revision + 1;
+      allow delete: if false;
+    }
+    match /users/{uid}/backups/{revision} {
+      allow read: if owner(uid);
+      allow create: if owner(uid) && validSnapshot()
+        && request.resource.data.keys().hasOnly(['revision', 'snapshot', 'created_at'])
+        && request.resource.data.revision is int;
+      allow update: if false;
+      allow delete: if owner(uid);
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
