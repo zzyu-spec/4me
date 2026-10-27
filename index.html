@@ -216,6 +216,9 @@ input,select,textarea{font-size:14px}
 .sleep-time-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%}.sleep-time-fields label{display:grid;gap:5px;min-width:0;text-align:center;color:var(--muted);font-size:12px}.sleep-time-fields small{font-size:11px}.sleep-time-fields input{font-size:16px;text-align:center}
 .sleep-dial-hint{font-size:11px;color:var(--muted);margin:0}.sleep-editor-actions{display:flex;gap:10px;width:100%}.sleep-editor-actions button{flex:1}.sleep-clear{background:transparent;color:var(--muted);font-size:11px;padding:4px}
 .journal-record-tools{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}.record-delete{display:inline-flex;align-items:center;gap:4px;background:transparent;color:var(--muted);font-size:11px;padding:5px 0}.record-delete:hover{color:var(--red)}
+
+/* Distinct emotion accents with pale surfaces and darker, readable labels. */
+.mood button.chosen,.chip.mood-badge{background:color-mix(in srgb,var(--mood-color) 18%,white);border-color:color-mix(in srgb,var(--mood-color) 65%,white);color:color-mix(in srgb,var(--mood-color) 60%,#252525)}
 </style>
 
 </head><body><div class="app">
@@ -333,7 +336,8 @@ function timelineHTML(){
 }
 const moods=[['😚','행복함'],['☺️','평온함'],['🤗','즐거움'],['🥰','설렘'],['😌','뿌듯함'],['😮‍💨','피곤함'],['😴','졸림'],['🥺','우울함'],['😖','불안함'],['😵‍💫','스트레스'],['😢','슬픔'],['🤬','화남']];let journalMood=[];
 function moodEmoji(name){return state.moodEmojiOverrides?.[name]||state.customMoodEmojis?.[name]||(moods.find(x=>x[1]===name)?.[0]||'✦')}
-function moodColor(name){return /^#[0-9a-fA-F]{6}$/.test(state.moodColors?.[name]||'')?state.moodColors[name]:({행복함:'#e5aa5b',평온함:'#83a98c',즐거움:'#e6a358',설렘:'#df8aab',뿌듯함:'#86a872',피곤함:'#9e9baa',졸림:'#a3a4ba',우울함:'#7f91bb',불안함:'#8f9dc1',스트레스:'#d28f7c',슬픔:'#8399b4',화남:'#cf7b7b'})[name]||'#b77d72'}
+const DEFAULT_MOOD_COLORS=Object.freeze({행복함:'#b58b13',평온함:'#238b88',즐거움:'#d87927',설렘:'#c75d92',뿌듯함:'#56854a',피곤함:'#8b7f72',졸림:'#575f9f',우울함:'#637484',불안함:'#9562aa',스트레스:'#8a5360',슬픔:'#347eae',화남:'#ce4d43'});
+function moodColor(name){return /^#[0-9a-fA-F]{6}$/.test(state.moodColors?.[name]||'')?state.moodColors[name]:(DEFAULT_MOOD_COLORS[name]||'#b77d72')}
 function mealData(value){if(value&&typeof value==='object')return {status:value.status||'',food:value.food||'',note:value.note||'',photos:Array.isArray(value.photos)?value.photos:[]};if(typeof value==='string'&&value)return {status:'ate',food:value,note:'',photos:[]};return {status:'',food:'',note:'',photos:[]}}
 function photoThumbs(photos,kind,meal=''){return (photos||[]).map((src,i)=>`<span class="photo-thumb"><img src="${src}" alt="첨부 사진 ${i+1}"><button type="button" class="photo-remove" data-action="${kind==='journal'?'removeJournalPhoto':'removeMealPhoto'}" data-index="${i}" ${meal?`data-meal="${meal}"`:''} aria-label="사진 삭제">×</button></span>`).join('')}
 
