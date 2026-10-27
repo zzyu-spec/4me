@@ -2,8 +2,8 @@
 
 현재 `firebase-config.json`은 비어 있으므로 공개 사이트에서 실제 회원가입·동기화는 아직 활성화되지 않습니다. 기존 기기 저장은 계속 동작합니다. 아래 과정은 프로젝트 소유자가 한 번만 진행합니다.
 
-1. [Firebase Console](https://console.firebase.google.com/)에 Google 계정으로 로그인하고 **프로젝트 만들기**를 선택합니다. 처음에는 Google Analytics 없이 시작해도 됩니다. **Spark(무료)**를 유지하고 결제 계정/카드를 연결하지 않습니다. 현재 무료 한도는 Firebase 공식 콘솔에서 확인하세요.
-2. **프로젝트 설정 → 일반 → 앱 추가 → 웹(</>)**에서 하루결 웹 앱을 등록합니다. Firebase Hosting은 필요하지 않습니다. 사이트는 기존 GitHub Pages를 계속 사용합니다.
+1. [Firebase Console](https://console.firebase.google.com/)에 Google 계정으로 로그인하고 **프로젝트 만들기**를 선택합니다. 처음에는 Google Analytics 없이 시작해도 됩니다. **Spark(무료)를** 유지하고 결제 계정/카드를 연결하지 않습니다. 현재 무료 한도는 Firebase 공식 콘솔에서 확인하세요.
+2. **프로젝트 설정 → 일반 → 앱 추가 → 웹(`</>`)에서** 하루결 웹 앱을 등록합니다. Firebase Hosting은 필요하지 않습니다. 사이트는 기존 GitHub Pages를 계속 사용합니다.
 3. 표시되는 `firebaseConfig`의 `apiKey`, `authDomain`, `projectId`, `appId`를 복사합니다. 이 웹 설정은 공개용입니다. **서비스 계정 JSON·private_key·관리자 비밀 키는 앱이나 GitHub에 넣지 마세요.**
 4. **Authentication → Sign-in method**에서 **이메일/비밀번호**를 활성화합니다. **Settings → Authorized domains**에 `zzyu-spec.github.io`를 추가합니다. 가입 확인 메일의 발신 이름도 확인하세요.
 5. **Firestore Database → 데이터베이스 만들기**에서 기본 `(default)` 데이터베이스를 생성합니다. 리전은 실제 사용할 지역에 가까운 곳으로 정하고, **프로덕션 모드**로 시작합니다. 지역은 생성 후 바꾸기 어려우니 확인하세요.
