@@ -45,6 +45,7 @@ const assert = require('node:assert/strict');
   await page.fill('#todoForm [name="title"]', '과제 수정');
   await page.locator('#todoForm>button.btn').click();
   await page.click('.todo-check');
+  await page.click('[data-status="done"]');
   await page.click('[data-action="toggleClosed"]');
   assert.equal(await page.locator('.todo-card').count(), 0);
   await page.click('[data-action="toggleClosed"]');
