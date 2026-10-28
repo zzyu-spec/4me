@@ -1,3 +1,4 @@
+const { useAuthenticatedUI } = require('./test-ui-auth.cjs');
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
 (async () => {
@@ -5,7 +6,7 @@ const assert = require('node:assert/strict');
   const page = await browser.newPage({ viewport: { width: 390, height: 850 }, colorScheme: 'dark' });
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.goto(process.env.HARUGYEOL_TEST_URL || 'http://127.0.0.1:8001');
+  await useAuthenticatedUI(page); await page.goto(process.env.HARUGYEOL_TEST_URL || 'http://127.0.0.1:8001');
   assert.equal(await page.locator('html').getAttribute('data-appearance'), 'light');
   await page.evaluate(() => {
     const date = state.selectedDate;

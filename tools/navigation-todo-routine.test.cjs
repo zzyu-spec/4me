@@ -1,3 +1,4 @@
+const { useAuthenticatedUI } = require('./test-ui-auth.cjs');
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
 (async () => {
@@ -6,7 +7,7 @@ const assert = require('node:assert/strict');
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   const base = process.env.HARUGYEOL_TEST_URL || 'http://127.0.0.1:8001';
-  await page.goto(base);
+  await useAuthenticatedUI(page); await page.goto(base);
   assert.equal(await page.locator('#nav [data-view="home"]').textContent(), '홈');
   const today = await page.evaluate(() => todayISO());
   await page.evaluate(()=>{window.datePickerOpened=false;document.querySelector('#homeDate').showPicker=()=>{window.datePickerOpened=true}});

@@ -1,0 +1,19 @@
+// Test-only Firebase substitute. Not imported or precached by the application.
+const apps=[],auth={currentUser:null,authStateReady:async()=>{const saved=JSON.parse(localStorage.getItem('fake-auth')||'null');if(saved)auth.currentUser=user(saved.uid,saved.email)}};
+const listeners=new Set();function notify(){for(const cb of listeners)cb(auth.currentUser)}auth.onAuthStateChanged=cb=>{listeners.add(cb);queueMicrotask(()=>{if(listeners.has(cb))cb(auth.currentUser)});return ()=>listeners.delete(cb)};
+function user(uid,email){return {uid,email,emailVerified:!email.startsWith('pending'),getIdToken:async()=> 'test-token-not-real'}}
+export function __expireAuth(){auth.currentUser=null;localStorage.removeItem('fake-auth');notify()}
+const endpoint=async(action,data={})=>{const r=await fetch('/__firebase_test__/'+action,{method:'POST',headers:{'Content-Type':'application/json','x-test-user':auth.currentUser?.uid||''},body:JSON.stringify(data)});const body=await r.json();if(!r.ok){const e=Error(body.error||'failed');e.code=r.status===403?'permission-denied':r.status===409?'retry':'unavailable';throw e}return body};
+export function initializeApp(config,name){const app={name,options:config};apps.push(app);return app}export const getApps=()=>apps;
+export const getAuth=()=>auth;export const browserLocalPersistence={};export const setPersistence=async()=>{};
+export async function signInWithEmailAndPassword(_,email,password){if(password!=='test-password'){const error=Error('invalid test password');error.code='auth/invalid-credential';throw error}const uid=email.split('@')[0];auth.currentUser=user(uid,email);localStorage.setItem('fake-auth',JSON.stringify({uid,email}));notify();return {user:auth.currentUser}}
+export async function createUserWithEmailAndPassword(a,email,pw){return signInWithEmailAndPassword(a,email,pw)}export const sendEmailVerification=async()=>{};export async function signOut(){auth.currentUser=null;localStorage.removeItem('fake-auth');notify()}
+export const initializeFirestore=()=>({});export const persistentLocalCache=o=>o;export const persistentMultipleTabManager=()=>({});
+export function doc(base,...parts){return {path:[...(base.path?[base.path]:[]),...parts].join('/')}}export const collection=doc;
+const snap=(ref,value)=>({ref,exists:()=>Boolean(value),data:()=>value,metadata:{hasPendingWrites:false}});
+export async function getDocFromServer(ref){const value=await endpoint('read',{path:ref.path});return snap(ref,value.data)}
+export async function runTransaction(db,callback){for(let attempt=0;attempt<5;attempt++){let writes=[],versions={};const tx={get:async ref=>{const result=await endpoint('read',{path:ref.path});versions[ref.path]=result.version;return snap(ref,result.data)},set:(ref,data)=>writes.push({path:ref.path,data})};const result=await callback(tx);if(!writes.length)return result;try{await endpoint('commit',{versions,writes});return result}catch(e){if(e.code!=='retry')throw e}}throw Error('too many conflicts')}
+export const query=(base,...ops)=>({base,ops});export const orderBy=(field,direction)=>({field,direction});export const limit=n=>({limit:n});
+export async function getDocsFromServer(q){const rows=await endpoint('list',{prefix:q.base.path+'/'});const sorted=rows.rows.sort((a,b)=>b.data.revision-a.data.revision).slice(0,q.ops.find(x=>x.limit)?.limit||10);return {docs:sorted.map(row=>({...snap({path:row.path},row.data),id:row.path.split('/').at(-1)}))}}
+export function writeBatch(){const deletes=[];return {delete:ref=>deletes.push(ref.path),commit:()=>endpoint('delete',{paths:deletes})}}
+export function onSnapshot(ref,options,next,error){let previous;const tick=()=>getDocFromServer(ref).then(s=>{const revision=s.exists()?s.data().revision:0;if(revision!==previous){previous=revision;next(s)}}).catch(error);const timer=setInterval(tick,400);tick();return ()=>clearInterval(timer)}

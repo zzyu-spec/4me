@@ -1,3 +1,4 @@
+const { useAuthenticatedUI } = require('./test-ui-auth.cjs');
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
 (async () => {
@@ -5,7 +6,7 @@ const assert = require('node:assert/strict');
   const page = await browser.newPage();
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.goto(process.env.HARUGYEOL_TEST_URL || 'http://127.0.0.1:8001');
+  await useAuthenticatedUI(page); await page.goto(process.env.HARUGYEOL_TEST_URL || 'http://127.0.0.1:8001');
   await page.evaluate(() => {
     const date = state.selectedDate;
     state.events = [{ id: 'e', title: '일정 항목', category: defaultEventCategory().name, date, start: '09:00', end: '10:00' }, { id: 'u', title: '시간 없는 일정', category: defaultEventCategory().name, date }];

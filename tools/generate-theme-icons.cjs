@@ -1,4 +1,5 @@
 // Generate install icons from the app's own CSS leaf mark (not from personal photos).
+const { useAuthenticatedUI } = require('./test-ui-auth.cjs');
 const { chromium } = require('playwright');
 const fs = require('node:fs');
 const path = require('node:path');
@@ -7,7 +8,7 @@ const path = require('node:path');
   fs.mkdirSync(path.join(root, 'icons'), { recursive: true });
   const browser = await chromium.launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox'] });
   const page = await browser.newPage();
-  await page.goto(process.env.HARUGYEOL_TEST_URL || 'http://127.0.0.1:8001');
+  await useAuthenticatedUI(page); await page.goto(process.env.HARUGYEOL_TEST_URL || 'http://127.0.0.1:8001');
   for (const theme of ['rose', 'sage', 'lavender', 'sky', 'butter', 'mono']) {
     for (const size of [192, 512]) {
       await page.setViewportSize({ width: size, height: size });

@@ -1,3 +1,4 @@
+const { useAuthenticatedUI } = require('./test-ui-auth.cjs');
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
 (async () => {
@@ -5,7 +6,7 @@ const assert = require('node:assert/strict');
   const page = await browser.newPage();
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.goto(process.env.HARUGYEOL_TEST_URL || 'http://127.0.0.1:8001');
+  await useAuthenticatedUI(page); await page.goto(process.env.HARUGYEOL_TEST_URL || 'http://127.0.0.1:8001');
   for (const width of [320, 390, 760]) {
     await page.setViewportSize({ width, height: 850 });
     assert.equal(await page.locator('#nav').evaluate(el => getComputedStyle(el).position), 'fixed');
@@ -23,8 +24,9 @@ const assert = require('node:assert/strict');
     assert.equal(await page.locator('#nav [aria-current="page"]').getAttribute('data-view'), 'timeline');
     await page.locator('#nav [data-view="home"]').click();
     await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
-    const footer = await page.locator('.footer').boundingBox();
-    assert(footer.y + footer.height <= nav.y);
+    assert.equal(await page.locator('.footer').count(),0);
+    const content=await page.locator('#main').boundingBox();
+    assert(content.y+content.height<=nav.y);
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   }
   await page.setViewportSize({ width: 390, height: 850 });
