@@ -22,7 +22,7 @@
   function withLocalPhotos(data){const copy=JSON.parse(JSON.stringify(data));for(const [date,journal] of Object.entries(copy.journals||{})){const local=(!read(OWNER_KEY)||read(OWNER_KEY)===account())?state.journals[date]:null;journal.photos=local?.photos||[];for(const [name,meal] of Object.entries(journal.meals||{})){const photos=mealData(local?.meals?.[name]).photos;if(photos.length||meal&&typeof meal==='object')journal.meals[name]={...mealData(meal),photos}}}return copy}
   async function digest(data){const bytes=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(canonical(data)));return Array.from(new Uint8Array(bytes),b=>b.toString(16).padStart(2,'0')).join('')}
   function validSnapshot(s){return s&&typeof s==='object'&&!Array.isArray(s)&&['todos','events','routines'].every(k=>Array.isArray(s[k]))&&s.journals&&typeof s.journals==='object'&&!Array.isArray(s.journals)}
-  function hasRecords(s){return ['todos','events','routines','timelineExtras','sections'].some(k=>s[k]?.length)||['journals','routineLogs','tombstones'].some(k=>Object.keys(s[k]||{}).length)}
+  function hasRecords(s){return ['todos','events','routines','timelineExtras','sections','habitGroups'].some(k=>s[k]?.length)||['journals','routineLogs','tombstones'].some(k=>Object.keys(s[k]||{}).length)}
   function editing(){return Boolean(document.getElementById('modal')&&!document.getElementById('cloudPanel'))||view==='journal'}
   function fail(error){if(error?.name==='AbortError')setStatus('접속 시간이 초과됐어요. 기록은 기기에 남아 있으며 다시 연결되면 재시도합니다.');else setStatus(error.message||'연결하지 못했어요. 기기 기록은 유지됩니다.')}
   let firebasePromise=null,firebase=null,stopListening=null,stopAuth=null,access='checking',booting=false,staleAccount=false;

@@ -91,6 +91,8 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
   assert.equal(await conflict.evaluate(()=>state.todos[0].id),'guest');
   await conflict.click('[data-cloud="useRemote"]');
   await conflict.waitForFunction(()=>state.todos.some(t=>t.id==='alice-local'));
+  // Even an empty custom folder is user data and must trigger the initial conflict choice.
+  const folderOnly=await client();await folderOnly.evaluate(()=>{state.habitGroups=[{id:'unsynced-folder',name:'지켜야 할 모음'}];save()});await login(folderOnly,'alice@example.test');await signedIn(folderOnly);await folderOnly.waitForSelector('[data-cloud="useRemote"]');assert.equal(await folderOnly.evaluate(()=>state.habitGroups[0].id),'unsynced-folder');
   // SDK session expiry locks navigation immediately, with local records intact.
   await second.evaluate(async()=>{const sdk=await import('./firebase-vendor.js');sdk.__expireAuth()});
   await second.waitForSelector('#cloudLoginForm'); assert(!await second.locator('#main').isVisible());
