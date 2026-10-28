@@ -1,0 +1,54 @@
+const { chromium } = require('playwright');
+const assert = require('node:assert/strict');
+(async () => {
+  const browser = await chromium.launch({ executablePath: '/usr/bin/chromium', args: ['--no-sandbox'] });
+  const page = await browser.newPage();
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto(process.env.HARUGYEOL_TEST_URL || 'http://127.0.0.1:8001');
+  await page.evaluate(() => {
+    const date = state.selectedDate;
+    state.events = [{ id: 'e', title: '일정 항목', category: defaultEventCategory().name, date, start: '09:00', end: '10:00' }, { id: 'u', title: '시간 없는 일정', category: defaultEventCategory().name, date }];
+    state.todos = [{ id: 't', title: '투두 항목', date, time: '11:00', status: 'open' }];
+    state.routines = [{ id: 'r', title: '루틴 항목', time: '12:00' }];
+    state.timelineExtras = [{ id: 'x', title: '활동 항목', date, start: '13:00', end: '14:00' }];
+    state.timelineMode = 'list';
+    save();
+    setView('timeline');
+  });
+  const records = () => page.evaluate(() => JSON.stringify([state.events, state.todos, state.routines, state.timelineExtras, state.routineLogs]));
+  const before = await records();
+  const filter = kind => page.locator(`[data-action="toggleTimelineKind"][data-kind="${kind}"]`);
+  assert.equal(await page.locator('.d-row').count(), 5);
+  for (const kind of ['event', 'routine', 'extra']) await filter(kind).click();
+  assert.equal(await page.locator('.d-row').count(), 1);
+  assert.equal(await page.locator('.d-title').textContent(), '투두 항목');
+  assert.equal(await filter('event').getAttribute('aria-pressed'), 'false');
+  assert.equal(await filter('todo').getAttribute('aria-pressed'), 'true');
+  await page.reload();
+  await page.evaluate(() => setView('timeline'));
+  assert.equal(await page.locator('.d-row').count(), 1);
+  await page.evaluate(() => { state.timelineMode = 'day'; render(); });
+  assert.equal(await page.locator('.visual-block').count(), 1);
+  assert.equal(await page.locator('.untimed-events').count(), 0);
+  await filter('event').click();
+  assert.equal(await page.locator('.visual-block').count(), 2);
+  assert.equal(await page.locator('.untimed-events').count(), 1);
+  await filter('todo').click();
+  await filter('event').click();
+  assert.equal(await page.locator('.visual-block').count(), 0);
+  assert((await page.locator('.empty').textContent()).includes('표시할 항목을 선택'));
+  assert.equal(await page.locator('.timeline-week .has-items').count(), 0);
+  await filter('routine').focus();
+  await page.keyboard.press('Space');
+  assert.equal(await filter('routine').getAttribute('aria-pressed'), 'true');
+  assert.equal(await page.locator('.visual-block').count(), 1);
+  for (const width of [320, 390, 1440]) {
+    await page.setViewportSize({ width, height: 850 });
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+  }
+  assert.equal(await records(), before);
+  assert.deepEqual(errors, []);
+  await browser.close();
+  console.log('PASS list/day filters, untimed events, selection persistence, all-off state, week indicators, keyboard, responsive layout, records unchanged; no JS errors');
+})().catch(error => { console.error(error); process.exit(1); });
