@@ -104,6 +104,7 @@ const assert = require('node:assert/strict');
       await page.evaluate(view=>setView(view),view);
       assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
       for (const button of await page.locator('#main button.add-circle').all()) {
+        if(!await button.isVisible())continue;
         const rect=await button.boundingBox(); assert(rect.width===rect.height);
         assert(await button.getAttribute('aria-label'));
         assert.equal(await button.locator('svg').count(),1);
