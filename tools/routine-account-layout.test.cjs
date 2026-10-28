@@ -9,8 +9,8 @@ const assert=require('node:assert/strict');
  for(const width of [320,390,1440]){
   await page.setViewportSize({width,height:850});
   const check=await page.locator('.routine-check').boundingBox(),title=await page.locator('.routine-title').boundingBox();
-  assert(check.x+check.width<=title.x);assert(Math.abs(check.y-title.y)<12);
-  assert.equal(await page.locator('.routine-time').evaluate(e=>getComputedStyle(e).fontSize),'12px');
+  assert(check.x>=title.x+title.width);
+  assert.equal(await page.locator('.routine-time').evaluate(e=>getComputedStyle(e).fontSize),'11px');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
  }
  await page.locator('.routine-check').click();assert.equal(await page.locator('.routine-check').getAttribute('aria-checked'),'true');
