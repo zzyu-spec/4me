@@ -34,6 +34,7 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
   // Existing local data is kept and connected only after a verified login.
   await a.evaluate(() => {
     const d=state.selectedDate;
+    state.habitGroups=[{id:'alice-group',name:'아침 준비',emoji:'☀️',color:'#789681'}];state.routines=[{id:'alice-habit',title:'물 마시기',days:[],whenMode:'none',groupId:'alice-group'}];
     state.todos=[{id:'alice-local',title:'기존 기기 기록',date:d,status:'open',period:'daily'}];
     state.journals[d]={text:'개인 일기',photos:['data:image/png;base64,LOCAL_PHOTO']}; save();
     diaryDrafts[d]={text:'아직 작성 중인 일기'};storeDiaryDrafts();
@@ -81,6 +82,7 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
   const second=await client(); await login(second,'alice@example.test'); await signedIn(second);
   await second.waitForFunction(()=>state.todos.some(t=>t.id==='alice-local'));
   assert.equal(await second.evaluate(d=>state.journals[d].photos.length,date),0);
+  assert.equal(await second.evaluate(()=>state.habitGroups[0].name),'아침 준비');assert.equal(await second.evaluate(()=>state.routines[0].groupId),'alice-group');
   // Existing guest text and server text conflict instead of being overwritten.
   const conflict=await client();
   await conflict.evaluate(()=>{state.todos=[{id:'guest',title:'덮어쓰면 안 되는 기록',date:todayISO(),status:'open'}];save()});
