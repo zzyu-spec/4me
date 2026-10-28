@@ -12,6 +12,7 @@ const assert = require('node:assert/strict');
     state.events = [{ id: 'e', title: '일정 항목', category: defaultEventCategory().name, date, start: '09:00', end: '10:00' }, { id: 'u', title: '시간 없는 일정', category: defaultEventCategory().name, date }];
     state.todos = [{ id: 't', title: '투두 항목', date, time: '11:00', status: 'open' }];
     state.routines = [{ id: 'r', title: '루틴 항목', time: '12:00' }];
+    state.routineLogs = {['r_'+date]:{done:true}};
     state.timelineExtras = [{ id: 'x', title: '활동 항목', date, start: '13:00', end: '14:00' }];
     state.timelineMode = 'list';
     save();
