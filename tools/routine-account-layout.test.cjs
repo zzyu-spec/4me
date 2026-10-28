@@ -17,7 +17,7 @@ const assert=require('node:assert/strict');
  await page.reload();await page.evaluate(()=>setView('routines'));assert.equal(await page.locator('.routine-check').getAttribute('aria-checked'),'true');
  await page.locator('.routine-check').click();assert.equal(await page.locator('.routine-check').getAttribute('aria-checked'),'false');
  assert.equal(await page.locator('.footer').count(),0);assert.equal(await page.locator('#importFile').count(),0);
- await page.evaluate(()=>document.querySelector('[data-action="openSettings"]').click());
+ await page.evaluate(()=>document.querySelector('[data-action="openSettings"]').click());await page.click('[data-settings-page="account"]');
  assert.equal(await page.locator('#importFile').count(),1);assert.equal(await page.locator('[data-action="exportData"]').count(),1);
  assert.deepEqual(errors,[]);await browser.close();console.log('PASS routine checkbox title alignment, compact time, toggle/reload, 320–1440px, backups in settings; no JS errors');
 })().catch(e=>{console.error(e);process.exit(1)});

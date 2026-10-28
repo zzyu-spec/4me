@@ -56,7 +56,7 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
   await contexts[0].setOffline(false);
   // Backup controls live in settings and include device photos.
   assert.equal(await a.locator('.footer').count(),0);
-  await a.click('[data-action="openSettings"]');
+  await a.click('[data-action="openSettings"]');await a.click('[data-settings-page="account"]');
   const downloadPromise=a.waitForEvent('download'); await a.click('[data-action="exportData"]');
   const backup=JSON.parse(fs.readFileSync(await (await downloadPromise).path(),'utf8'));
   assert.equal(backup.journals[date].photos[0],'data:image/png;base64,LOCAL_PHOTO');
