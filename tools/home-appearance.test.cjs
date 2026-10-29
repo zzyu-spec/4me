@@ -27,7 +27,7 @@ const assert = require('node:assert/strict');
   await page.locator('[data-action="openSettings"]').click();await page.click('[data-settings-page="appearance"]');
   await page.locator('[data-action="setAppearance"][data-value="dark"]').click();
   assert.equal(await page.locator('html').getAttribute('data-appearance'), 'dark');
-  await page.locator('[data-action="closeModal"]').click();
+  await page.locator('#modal').click({position:{x:2,y:2}});
   await page.reload();
   assert.equal(await page.locator('html').getAttribute('data-appearance'), 'dark');
   await page.screenshot({ path: '/workspace/harugyeol-tools/home-a-dark.png', fullPage: true });
@@ -75,7 +75,7 @@ const assert = require('node:assert/strict');
     const modal = await page.locator('#modal>.panel').boundingBox();
     assert(modal.x >= 0 && modal.x + modal.width <= width);
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
-    await page.locator('[data-action="closeModal"]').click();
+    await page.locator('#modal').click({position:{x:2,y:2}});
   }
   await page.evaluate(() => { const e=state.events[0]; e.note='기존 메모 '.repeat(70).trim(); e.customField='보존'; eventForm(e); });
   const previousNote=await page.inputValue('#eventNote');

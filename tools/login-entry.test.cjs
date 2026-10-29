@@ -22,7 +22,7 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
   async function logout(p) { await p.evaluate(() => harugyeolCloud.open()); await p.click('[data-cloud="logout"]'); await p.waitForSelector('#cloudLoginForm'); }
   const a = await client();
   assert(!await a.locator('#main').isVisible()); assert(!await a.locator('#nav').isVisible());
-  await a.click('[data-action="closeModal"]');
+  await a.locator('#modal').click({position:{x:2,y:2}});
   assert(await a.locator('#authGate').isVisible()); assert(!await a.locator('#main').isVisible());
   await a.click('[data-auth-open]');
   await login(a, 'alice@example.test', 'wrong-password');
@@ -61,7 +61,7 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
   const backup=JSON.parse(fs.readFileSync(await (await downloadPromise).path(),'utf8'));
   assert.equal(backup.journals[date].photos[0],'data:image/png;base64,LOCAL_PHOTO');
   assert(!JSON.stringify(backup).includes('test-password'));
-  await a.click('[data-action="closeModal"]');
+  await a.locator('#modal').click({position:{x:2,y:2}});
   await logout(a); assert(!await a.locator('#main').isVisible());
   assert.equal(await a.evaluate(()=>JSON.parse(localStorage.getItem('harugyeol-v1')).todos[0].title),'기존 기기 기록');
   // A different account never displays or uploads Alice's local records or drafts.

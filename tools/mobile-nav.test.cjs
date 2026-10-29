@@ -41,7 +41,7 @@ const assert = require('node:assert/strict');
   await page.screenshot({ path: '/workspace/harugyeol-tools/mobile-bottom-nav.png', fullPage: false });
   await page.locator('[data-action="openSettings"]').click();
   assert(Number(await page.locator('#modal').evaluate(el => getComputedStyle(el).zIndex)) > Number(await page.locator('#nav').evaluate(el => getComputedStyle(el).zIndex)));
-  await page.locator('[data-action="closeModal"]').click();
+  await page.locator('#modal').click({position:{x:2,y:2}});
   await page.setViewportSize({ width: 1440, height: 1000 });
   assert.equal(await page.locator('#nav').evaluate(el => getComputedStyle(el).position), 'static');
   assert(!await page.locator('#nav svg').first().isVisible());
