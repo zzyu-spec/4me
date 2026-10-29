@@ -82,7 +82,7 @@ const assert = require('node:assert/strict');
   assert.equal(await page.evaluate(() => state.selectedDate), await page.evaluate(() => plusDays(todayISO(),14)));
   await page.click('[data-action="timelinePrevWeek"]');
   assert.equal(await page.evaluate(() => state.selectedDate), await page.evaluate(() => plusDays(todayISO(),7)));
-  await page.click('[data-action="timelineThisWeek"]');
+  await page.fill('#timelineDate', await page.evaluate(() => todayISO()));
   await page.click('[data-action="newTimelineExtra"]');
   assert.equal(await page.locator('#timelineExtraForm select[name="category"]').inputValue(), '');
   assert(!await page.locator('#timelineExtraForm select[name="category"]').evaluate(el => el.required));
