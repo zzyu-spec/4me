@@ -11,7 +11,7 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
     const context = await browser.newContext({ viewport: { width: 390, height: 850 }, serviceWorkers: 'allow', acceptDownloads: true });
     contexts.push(context); await server.attach(context);
     const p = await context.newPage(); p.on('pageerror', e => errors.push(e.message)); p.on('dialog', d => d.accept());
-    await p.goto(base); await p.waitForSelector('#cloudLoginForm'); return p;
+    await p.goto(base); await p.waitForSelector('#cloudLoginForm'); assert.equal(await p.locator('#cloudConfigForm,.cloud-connection-details,#cloudPanel a[href="firebase-setup.html"]').count(),0); return p;
   }
   async function login(p, email, password = 'test-password') {
     if (!await p.locator('#cloudLoginForm').count()) await p.evaluate(() => harugyeolCloud.open());
@@ -19,7 +19,7 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
     await p.click('#cloudLoginForm button[value="login"]');
   }
   async function signedIn(p) { await p.waitForFunction(() => harugyeolCloud.isSignedIn()); }
-  async function logout(p) { await p.evaluate(() => harugyeolCloud.open()); await p.click('[data-cloud="logout"]'); await p.waitForSelector('#cloudLoginForm'); }
+  async function logout(p) { await p.evaluate(() => harugyeolCloud.open()); assert.equal(await p.locator('#cloudConfigForm,.cloud-connection-details,#cloudPanel a[href="firebase-setup.html"]').count(),0); await p.click('[data-cloud="logout"]'); await p.waitForSelector('#cloudLoginForm'); }
   const a = await client();
   assert(!await a.locator('#main').isVisible()); assert(!await a.locator('#nav').isVisible());
   await a.locator('#modal').click({position:{x:2,y:2}});
