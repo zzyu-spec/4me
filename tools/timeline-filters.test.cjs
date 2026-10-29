@@ -40,7 +40,7 @@ const assert = require('node:assert/strict');
   await filter('event').click();
   assert.equal(await page.locator('.visual-block').count(), 0);
   assert((await page.locator('.empty').textContent()).includes('표시할 항목을 선택'));
-  assert.equal(await page.locator('.timeline-week .has-items').count(), 0);
+  assert.equal(await page.locator('.timeline-week .has-records').count(), 0);
   await filter('routine').focus();
   await page.keyboard.press('Space');
   assert.equal(await filter('routine').getAttribute('aria-pressed'), 'true');
