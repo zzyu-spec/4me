@@ -122,7 +122,7 @@ const assert = require('node:assert/strict');
   await itemAction(page,'.todo-undated [data-action="editTodo"]');
   assert.equal(await page.inputValue('#todoForm [name="date"]'),'');
   await page.locator('#modal').click({position:{x:2,y:2}});
-  await page.evaluate(()=>setView('journal'));
+  await page.evaluate(()=>(setView('journal'),document.querySelector('[data-journal-screen="write"]').click()));
   const pick=page.locator('label.photo-pick').first();
   const chooserPromise=page.waitForEvent('filechooser');
   await pick.click();

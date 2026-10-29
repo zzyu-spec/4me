@@ -35,7 +35,7 @@ const assert = require('node:assert/strict');
   assert.equal(await page.locator('html').getAttribute('data-appearance'), 'dark');
   for (const view of ['home', 'calendar', 'timeline', 'todos', 'routines', 'journal']) {
     await page.evaluate(view => setView(view), view);
-    const panel = await page.locator('#main .panel').first().evaluate(el => getComputedStyle(el).backgroundColor);
+    const panel = await page.locator(view==='journal'?'.journal-menu-card':'#main .panel').first().evaluate(el => getComputedStyle(el).backgroundColor);
     assert.equal(panel, 'rgb(35, 38, 45)');
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   }
