@@ -22,7 +22,7 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
   async function logout(p) { await p.evaluate(() => harugyeolCloud.open()); assert.equal(await p.locator('#cloudConfigForm,.cloud-connection-details,#cloudPanel a[href="firebase-setup.html"]').count(),0); await p.click('[data-cloud="logout"]'); await p.waitForSelector('#cloudLoginForm'); }
   const a = await client();
   assert(!await a.locator('#main').isVisible()); assert(!await a.locator('#nav').isVisible());
-  await a.locator('#modal').click({position:{x:2,y:2}});
+  await a.click('[data-cloud-back]');
   assert(await a.locator('#authGate').isVisible()); assert(!await a.locator('#main').isVisible());
   await a.click('[data-auth-open]');
   await login(a, 'alice@example.test', 'wrong-password');
@@ -48,6 +48,7 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
   const date=await a.evaluate(()=>state.selectedDate);
   await a.reload(); await signedIn(a);
   assert(await a.locator('#main').isVisible()); assert.equal(await a.locator('#cloudLoginForm').count(),0);
+  await a.click('[data-action="openSettings"]');await a.click('[data-settings-page="account"]');await a.click('[data-action="openCloudSettings"]');await a.click('[data-cloud-back]');assert.equal(await a.locator('#modal h2').textContent(),'계정 · 백업');assert(await a.evaluate(()=>harugyeolCloud.isSignedIn()));await a.locator('#modal').click({position:{x:2,y:2}});
   // Authenticated sessions retain offline access to their existing device records.
   await a.evaluate(()=>navigator.serviceWorker.ready);
   await a.waitForFunction(()=>Boolean(navigator.serviceWorker.controller));
