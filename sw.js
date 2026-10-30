@@ -1,4 +1,4 @@
-const C='harugyeol-v167';
+const C='harugyeol-v168';
 const A=['./','index.html','music.js','music.css','cloud.js','firebase-vendor.js','firebase-config.json','manifest.json','icon-192.png','icon-512.png',...['rose','sage','lavender','sky','butter','mono'].flatMap(theme=>[`manifest-${theme}.json`,`icons/${theme}-192.png`,`icons/${theme}-512.png`])];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(A.map(path=>new Request(path,{cache:'reload'})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('harugyeol-')&&k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));

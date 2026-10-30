@@ -16,6 +16,7 @@ exports.createFirebaseTestServer = () => {
       }
       if (action === 'read') return route.fulfill({ json: { data: records.get(data.path)?.data || null, version: records.get(data.path)?.version || 0 } });
       if (action === 'commit') {
+        for(const row of data.writes){const allowed=row.path.includes('/backups/')?['revision','snapshot','created_at']:['revision','snapshot','updated_at'];if(Object.keys(row.data).some(key=>!allowed.includes(key)))return route.fulfill({status:403,json:{error:'unexpected document field'}})}
         for (const [key, version] of Object.entries(data.versions)) if ((records.get(key)?.version || 0) !== version) return route.fulfill({ status: 409, json: { error: 'changed' } });
         for (const row of data.writes) records.set(row.path, { data: structuredClone(row.data), version: (records.get(row.path)?.version || 0) + 1 });
         commits++; return route.fulfill({ json: { ok: true } });
