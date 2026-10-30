@@ -46,6 +46,7 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
   assert.equal(server.records.get('users/alice/planner/current').data.snapshot.todos[0].title,'기존 기기 기록');
   assert(!JSON.stringify(server.records.get('users/alice/planner/current').data).includes('LOCAL_PHOTO'));
   const date=await a.evaluate(()=>state.selectedDate);
+  assert(await a.evaluate(()=>harugyeolPhotos.compactState()));
   await a.reload(); await signedIn(a);
   assert(await a.locator('#main').isVisible()); assert.equal(await a.locator('#cloudLoginForm').count(),0);
   await a.click('[data-action="openSettings"]');await a.click('[data-settings-page="account"]');await a.click('[data-action="openCloudSettings"]');await a.click('[data-cloud-back]');assert.equal(await a.locator('#modal h2').textContent(),'계정 · 백업');assert(await a.evaluate(()=>harugyeolCloud.isSignedIn()));await a.locator('#modal').click({position:{x:2,y:2}});
@@ -77,7 +78,7 @@ const { createFirebaseTestServer } = require('./test-firebase-server.cjs');
   await a.waitForFunction(()=>!document.querySelector('#cloudPanel'));
   assert(await a.evaluate(()=>state.todos.some(t=>t.id==='alice-local')));
   assert(!await a.evaluate(()=>state.todos.some(t=>t.id==='bob-local')));
-  assert.equal(await a.evaluate(d=>state.journals[d].photos[0],date),'data:image/png;base64,LOCAL_PHOTO');
+  assert.equal(await a.evaluate(d=>harugyeolPhotos.readPhoto(state.journals[d].photos[0]),date),'data:image/png;base64,LOCAL_PHOTO');
   assert.equal(await a.evaluate(d=>diaryDrafts[d].text,date),'아직 작성 중인 일기');
   // A clean second device automatically receives the account's text snapshot.
   const second=await client(); await login(second,'alice@example.test'); await signedIn(second);
