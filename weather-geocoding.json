@@ -1,0 +1,6 @@
+{
+  "nominatim": {
+    "enabled": true,
+    "endpoint": "https://nominatim.openstreetmap.org/search"
+  }
+}
