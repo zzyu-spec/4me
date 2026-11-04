@@ -18,7 +18,7 @@
 - 검색 버튼을 누를 때만 조회합니다. 자동완성, 주기적 지역 검색, 역지오코딩 추적, 전체 동·리 목록 수집은 하지 않습니다.
 - 브라우저 요청 시작 간격을 1.1초 이상으로 제한합니다. Web Locks가 있으면 같은 출처의 탭 간 요청도 직렬화하며, 공유 시각을 저장해 재접속 직후의 연속 호출을 줄입니다. Web Locks 미지원 환경의 폴백은 탭 간 완전한 직렬화를 보장하지 않습니다.
 - 지역 검색 결과는 메모리와 sessionStorage에 24시간 캐시합니다. 실패한 상세 검색은 캐시하지 않아 다음 직접 검색에서 재시도할 수 있습니다.
-- 식별 가능한 웹앱 출처를 HTTP Referer로 제공합니다(`strict-origin-when-cross-origin`). 경로와 기록 데이터는 보내지 않습니다. 출처/저작권 링크와 정책 링크를 검색 창에 표시하며, OSM 위치를 사용하면 홈에도 출처를 표시합니다.
+- 식별 가능한 웹앱 출처를 HTTP Referer로 제공합니다(`strict-origin-when-cross-origin`). 경로와 기록 데이터는 보내지 않습니다. 출처/저작권 링크를 검색 창에 표시하고 정책은 이 운영 문서에 연결합니다. OSM 위치를 사용하면 홈에도 출처를 표시합니다.
 - 원본 데이터는 ODbL입니다. 출처는 **© OpenStreetMap contributors**입니다. 정책의 개인정보 제한에 따라 개인 정보나 비밀 정보가 담긴 검색어를 보내지 않아야 합니다.
 
 서비스를 앱 코드 업데이트 없이 바꿀 수 있도록 `weather-geocoding.json`을 검색 시 캐시 없이 읽습니다. `nominatim.enabled: false`로 공개 상세 검색을 끄고 기존 도시 검색만 사용할 수 있습니다. `nominatim.endpoint`를 HTTPS의 호환 프록시/다른 Nominatim 인스턴스로 바꿀 수도 있습니다. 설정 파일에 비밀 키를 넣지 않습니다. 사용자 지역 검색은 필요하지 않으면 끌 수 있으므로 전체 플래너의 필수 의존성이 아닙니다.
@@ -40,3 +40,9 @@ Open-Meteo 무료 공개 API의 비상업적 사용 조건과 요청 제한도 �
 이 개발 환경에서는 외부 날씨·검색 API의 직접 연결이 차단됩니다. 브라우저 테스트는 실제 공식 응답 구조의 모형을 사용하며, 실제 지역별 검색 결과와 사용자 네트워크의 가용성 또는 iPhone Safari 실기기를 검증했다고 주장하지 않습니다. Nominatim 정책은 공식 OWG 웹사이트 저장소의 [원문](https://github.com/openstreetmap/owg-website/blob/master/policies/nominatim.md)을 확인했습니다.
 
 공식 문서: [Nominatim 검색](https://nominatim.org/release-docs/latest/api/Search/), [Open-Meteo 날씨](https://open-meteo.com/en/docs), [도시 검색](https://open-meteo.com/en/docs/geocoding-api).
+
+## 홈 표시 (v200)
+
+날씨는 인사말 오른쪽에 지역명과 현재 날씨를 표시합니다. 지역명은 가장 구체적인 동네 위주로 짧게 표시하고, 누르면 전체 주소와 위치 설정을 확인할 수 있습니다. 저장된 이름과 좌표는 변경하지 않습니다. 인사말을 숨기던 과거 날짜에서도 현재 날씨와 설정 기능은 유지합니다. 중복된 제공자 문구와 필수가 아닌 Nominatim 홈페이지/정책 링크는 화면에서 제거했습니다.
+
+[Open-Meteo 공식 데이터 라이선스](https://github.com/open-meteo/open-meteo#data-license)는 데이터 표시 위치 옆 출처 링크와 CC BY 4.0 라이선스 링크를 요구합니다. 따라서 인사말 영역 아래쪽에 `Open-Meteo · CC BY 4.0`을 작은 한 줄로 남기고, OSM 위치일 때만 `© OpenStreetMap 기여자`를 같은 줄에 추가합니다. 기온 반올림 표시는 출처 링크의 설명에 명시합니다. 출처를 삭제하거나 눈에 보이지 않게 숨기지 않습니다.
