@@ -31,4 +31,9 @@ localStorage/JSON 백업/Firestore 전체 스냅샷 구조를 변경하지 않�
 - 연속 달성은 현재 반복 규칙과 보존된 날짜 로그 기준이며 과거 반복 요일 변경 이력은 추정하지 않는다.
 - iPhone Safari 실기기와 실제 계정의 Firebase 서버 동기화는 직접 검증하지 못했다. Chromium과 Firebase 모형 검증을 구분한다.
 
-별도 package.json/빌드 스크립트가 없는 정적 프로젝트다. inline JS 및 수정 JS의 구문 검사와 `git diff --check`를 수행한다. 새 JS·CSS·배경 파일은 서비스 워커 v206의 같은 출처 정적 캐시 목록에 포함한다. API 비밀키나 새 서버 설정은 필요하지 않다.
+별도 package.json/빌드 스크립트가 없는 정적 프로젝트다. inline JS 및 수정 JS의 구문 검사와 `git diff --check`를 수행한다. 새 JS·CSS·배경 파일은 서비스 워커 v207의 같은 출처 정적 캐시 목록에 포함한다. API 비밀키나 새 서버 설정은 필요하지 않다.
+
+습관 편집 중 알림 설정을 열면 먼저 습관을 저장한다. 유효성 검사/저장에 실패하면 편집 창과 입력값을 유지한다. 일기 작성 중 상단 알림을 열 때도 자동 저장 실패 시 이동하지 않는다.
+
+수정 파일: `index.html`, `weather.js`, `sw.js`, `tools/journal-workspace.test.cjs`, `tools/todo-workspace-ui.test.cjs`, `tools/expanded-repeat-reminders.test.cjs`.
+추가 파일: `planner-enhancements.js`, `planner-enhancements.css`, `home-banner.webp`, `tools/design-completion.test.cjs`, 이 문서.
