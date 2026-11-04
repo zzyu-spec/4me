@@ -37,3 +37,5 @@ localStorage/JSON 백업/Firestore 전체 스냅샷 구조를 변경하지 않�
 
 수정 파일: `index.html`, `weather.js`, `sw.js`, `tools/journal-workspace.test.cjs`, `tools/todo-workspace-ui.test.cjs`, `tools/expanded-repeat-reminders.test.cjs`.
 추가 파일: `planner-enhancements.js`, `planner-enhancements.css`, `home-banner.webp`, `tools/design-completion.test.cjs`, 이 문서.
+
+후속 요청: 캘린더 날씨 UI·출처 표시·날짜별 API 조회를 제거했다. 홈 날씨·지역 설정은 유지한다.
