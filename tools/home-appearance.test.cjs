@@ -10,6 +10,7 @@ const assert = require('node:assert/strict');
   assert.equal(await page.locator('html').getAttribute('data-appearance'), 'light');
   await page.evaluate(() => {
     const date = state.selectedDate;
+    state.todoCollectCompleted = false; // Exercise the individual todo status flow.
     state.eventCategories = [{ name: '알바', color: '#d2bb50', icon: 'work' }, { name: '공부', color: '#8ba7d8', icon: 'book' }];
     state.events = [{ id: 'e', title: '식당 아르바이트', date, endDate: date, category: '알바', start: '11:30', end: '14:30', location: '한그릇 식당' }, { id: 'f', title: '영어 수업', date, endDate: date, category: '공부', start: '15:25', end: '15:50', note: '교재 챙기기' }];
     state.todos = [{ id: 't', title: '하루결 개발', date, status: 'open', period: 'daily' }];
@@ -37,8 +38,10 @@ const assert = require('node:assert/strict');
   assert.equal(await page.locator('html').getAttribute('data-appearance'), 'dark');
   for (const view of ['home', 'calendar', 'timeline', 'todos', 'routines', 'journal']) {
     await page.evaluate(view => setView(view), view);
-    const panel = await page.locator(view==='journal'?'.journal-menu-card':'#main .panel').first().evaluate(el => getComputedStyle(el).backgroundColor);
-    assert.equal(panel, 'rgb(35, 38, 45)');
+    const panel = view === 'journal'
+      ? await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--panel').trim())
+      : await page.locator('#main .panel').first().evaluate(el => getComputedStyle(el).backgroundColor);
+    assert.equal(panel, view === 'journal' ? '#23262d' : 'rgb(35, 38, 45)');
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   }
   await page.evaluate(() => { state.appearance = 'system'; save(); render(); eventForm(); });
