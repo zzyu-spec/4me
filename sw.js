@@ -1,5 +1,5 @@
-const C='harugyeol-v221';
-const A=['./','index.html','photos.js','weather.js','music.js','music.css','planner-enhancements.js','planner-enhancements.css','timeline-flow.js','timeline-flow.css','home-banner.webp','cloud.js','firebase-vendor.js','firebase-config.json','manifest.json','icon-192.png','icon-512.png',...['rose','sage','lavender','sky','butter','mono'].flatMap(theme=>[`manifest-${theme}.json`,`icons/${theme}-192.png`,`icons/${theme}-512.png`])];
+const C='harugyeol-v222';
+const A=['./','index.html','push.js','push-storage.js','push-worker.js','push-config.json','functions/reminder-model.js','photos.js','weather.js','music.js','music.css','planner-enhancements.js','planner-enhancements.css','timeline-flow.js','timeline-flow.css','home-banner.webp','cloud.js','firebase-vendor.js','firebase-config.json','manifest.json','icon-192.png','icon-512.png',...['rose','sage','lavender','sky','butter','mono'].flatMap(theme=>[`manifest-${theme}.json`,`icons/${theme}-192.png`,`icons/${theme}-512.png`])];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(A.map(path=>new Request(path,{cache:'reload'})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('harugyeol-')&&k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{
@@ -10,4 +10,4 @@ self.addEventListener('fetch',e=>{
   e.respondWith(fetch(request,{cache:'no-cache'}).then(response=>{if(response.ok&&paths.includes(url.pathname)){const copy=response.clone();e.waitUntil(caches.open(C).then(cache=>cache.put(request,copy)))}return response}).catch(async()=>{const hit=await caches.match(request);if(hit)return hit;if(request.mode==='navigate')return (await caches.match(new URL('index.html',self.registration.scope)))||Response.error();return Response.error()}));
 });
 
-self.addEventListener('notificationclick',event=>{event.notification.close();event.waitUntil((async()=>{const windows=await self.clients.matchAll({type:'window',includeUncontrolled:true});const scope=new URL(self.registration.scope);const existing=windows.find(client=>client.url.startsWith(scope.href));if(existing)return existing.focus();return self.clients.openWindow(scope.href)})())});
+importScripts('./push-worker.js');

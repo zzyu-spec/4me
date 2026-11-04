@@ -1,0 +1,8 @@
+/* Isolated from planner/photo databases. Shared by page and Service Worker. */
+(function(root){
+ 'use strict';
+ function database(){return new Promise((resolve,reject)=>{const req=indexedDB.open('harugyeol-push',1);req.onupgradeneeded=()=>{req.result.createObjectStore('meta');req.result.createObjectStore('seen')};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
+ async function access(store,mode,work){const db=await database();try{return await new Promise((resolve,reject)=>{const tx=db.transaction(store,mode);let result;const req=work(tx.objectStore(store));if(req)req.onsuccess=()=>{result=req.result};tx.oncomplete=()=>resolve(result);tx.onerror=tx.onabort=()=>reject(tx.error)})}finally{db.close()}}
+ const api={claim:async key=>{const db=await database();try{return await new Promise((resolve,reject)=>{const tx=db.transaction('seen','readwrite'),s=tx.objectStore('seen'),r=s.get(key);let claimed=false;r.onsuccess=()=>{if(!r.result||r.result<Date.now()-86400000){s.put(Date.now(),key);claimed=true}};tx.oncomplete=()=>resolve(claimed);tx.onerror=tx.onabort=()=>reject(tx.error)})}finally{db.close()}},release:key=>access('seen','readwrite',s=>s.delete(key)),binding:()=>access('meta','readonly',s=>s.get('binding')),setBinding:value=>access('meta','readwrite',s=>s.put(value,'binding')),seen:tag=>access('seen','readonly',s=>s.get(tag)),mark:async(tag)=>{const now=Date.now();await access('seen','readwrite',s=>s.put(now,tag));await access('seen','readwrite',s=>{const r=s.openCursor();r.onsuccess=()=>{const c=r.result;if(c){if(c.value<now-86400000)c.delete();c.continue()}}})}};
+ root.harugyeolPushStore=api;
+})(typeof self!=='undefined'?self:globalThis);

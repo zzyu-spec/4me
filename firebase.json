@@ -1,0 +1,3 @@
+{
+  "functions": [{ "source": "functions", "codebase": "push", "ignore": ["node_modules", "test", "*.log", ".env*"], "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run check", "npm --prefix \"$RESOURCE_DIR\" test"] }]
+}
