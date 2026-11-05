@@ -1,0 +1,2 @@
+'use strict';
+exports.seedAccount=async(context,user={uid:'qa-user',email:'qa@example.com',emailVerified:true},docs={})=>context.addInitScript(({user,docs})=>{if(!localStorage.getItem('test-firebase-initialized')){localStorage.setItem('test-firebase-user',JSON.stringify(user));localStorage.setItem('test-firebase-docs',JSON.stringify(docs));localStorage.setItem('test-firebase-initialized','yes')}},{user,docs});

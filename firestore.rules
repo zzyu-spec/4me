@@ -30,6 +30,62 @@ service cloud.firestore {
       allow update: if false;
       allow delete: if owner(uid);
     }
+    // Arnit uses the same verified accounts, with a separate owner-only namespace.
+    function validArnitSnapshot() {
+      return request.resource.data.keys().hasOnly(['revision', 'payload', 'assetIds', 'updated_at'])
+        && request.resource.data.revision is int
+        && request.resource.data.payload is string
+        && request.resource.data.payload.size() <= 750000
+        && request.resource.data.assetIds is list
+        && request.resource.data.assetIds.size() <= 4096
+        && request.resource.data.updated_at is string;
+    }
+    match /users/{uid}/arnit/current {
+      allow read: if owner(uid);
+      allow create: if owner(uid) && validArnitSnapshot()
+        && request.resource.data.revision == 1;
+      allow update: if owner(uid) && validArnitSnapshot()
+        && request.resource.data.revision == resource.data.revision + 1;
+      allow delete: if false;
+    }
+    match /users/{uid}/arnitBackups/{revision} {
+      allow read: if owner(uid);
+      allow create: if owner(uid) && validArnitSnapshot()
+        && request.resource.data.revision >= 1;
+      allow update, delete: if false;
+    }
+    match /users/{uid}/arnitAssets/{assetId} {
+      function validManifest() {
+        return assetId.matches('^image-[0-9a-f]{64}$')
+          && request.resource.data.keys().hasOnly(['chunkCount', 'characters'])
+          && request.resource.data.chunkCount is int
+          && request.resource.data.chunkCount >= 1
+          && request.resource.data.chunkCount <= 70
+          && request.resource.data.characters is int
+          && request.resource.data.characters > 0
+          && request.resource.data.characters <= 30000000;
+      }
+      allow read: if owner(uid);
+      allow create: if owner(uid) && validManifest();
+      allow update: if owner(uid) && validManifest() && request.resource.data == resource.data;
+      allow delete: if false;
+      match /chunks/{index} {
+        function validChunk() {
+          return assetId.matches('^image-[0-9a-f]{64}$')
+            && index.matches('^[0-9]{1,2}$')
+            && request.resource.data.keys().hasOnly(['index', 'data'])
+            && request.resource.data.index is int
+            && request.resource.data.index >= 0
+            && request.resource.data.index < 70
+            && request.resource.data.data is string
+            && request.resource.data.data.size() <= 450000;
+        }
+        allow read: if owner(uid);
+        allow create: if owner(uid) && validChunk();
+        allow update: if owner(uid) && validChunk() && request.resource.data == resource.data;
+        allow delete: if false;
+      }
+    }
     match /{document=**} {
       allow read, write: if false;
     }
