@@ -1,4 +1,5 @@
 {
   "enabled": false,
-  "apiBase": ""
+  "apiBase": "",
+  "discoveryApiBase": "https://asia-northeast3-harugyeol-e7866.cloudfunctions.net/pushApi"
 }

@@ -93,3 +93,28 @@ GitHub Pages는 HTTPS 정적 파일과 Service Worker를 제공하지만 예약 
 
 수정: `index.html`, `planner-enhancements.js`, `cloud.js`, `sw.js`.
 추가: `push.js`, `push-storage.js`, `push-worker.js`, `push-config.json`, `firebase.json`, `functions/` 서버·공유 모델·잠금 파일·검사·키 생성 도구, 푸시 관련 `tools/*test.cjs` 및 기존 마감일 검사 갱신, `.gitignore`, 이 문서.
+
+## Google Cloud Shell에서 실행하는 간단한 배포 경로
+
+Codex 환경에 Google 관리 계정 연결이 없으면 사용자의 Cloud Shell에서 직접 배포할 수 있다. 이 경로는 Codex의 네트워크 제한을 우회해 원격 명령을 실행하는 기능이 아니다. 사용자가 본인 Google 계정의 Cloud Shell에서 아래 명령을 실행하며, 인증 코드·토큰·서비스 계정 JSON을 대화창으로 보내지 않는다.
+
+1. https://shell.cloud.google.com/?project=harugyeol-e7866&show=terminal 에서 Cloud Shell을 연다. Authorize가 뜨면 본인 계정으로 승인한다.
+2. 처음 실행할 때 다음 명령을 실행한다. 같은 이름의 폴더가 이미 있으면 기존 작업 폴더를 확인하고 그 안에서 배포 명령만 다시 실행한다. 폴더를 삭제하거나 덮어쓰지 않는다.
+
+```bash
+git clone https://github.com/zzyu-spec/4me.git harugyeol-push && cd harugyeol-push && bash tools/deploy-push-cloudshell.sh --deploy
+```
+
+이 `--deploy` 명령은 **실제** Functions/Scheduler/Secret/실행 계정을 만들고 필요한 API·권한을 설정한다. Blaze 사용량, 빌드·이미지·Secret 보관 비용이 발생할 수 있으며 0원이나 요금 상한을 보장하지 않는다. `--deploy`가 없으면 안내만 출력한다. 스크립트는 본인 Cloud Shell에서만 실행하도록 확인하고, 결제 연결 여부를 읽은 뒤 로컬 검사 18개를 거친다. ADC가 없다면 본인 Cloud Shell의 Google 로그인 절차를 요청하며 토큰 값을 수집·출력하지 않는다.
+
+Node가 22 미만이면 임시 로컬 Node 22 도구를 설치한다. Firebase CLI 15.35.0을 사용한다. 전용 `harugyeol-push-runtime` 서비스 계정에 Datastore User와 Firebase Auth Viewer, 지정 Secret 한 개의 Secret Accessor를 부여한다. 실제 조회된 build SA에 Run Builder를 사용한다. 배포하는 계정에는 이 계정들에 대한 actAs만 부여하며 Owner/Editor를 새로 부여하지 않는다. `PUSH_RUNTIME_SERVICE_ACCOUNT`는 새로운 공개 Functions parameter다. SDK가 서버 실행 계정과 Scheduler OIDC 호출 계정에 이 값을 사용한다.
+
+기존 VAPID Secret과 공개 설정은 재사용하며 키를 자동 교체하지 않는다. 기존 Secret이 있는데 공개 설정을 찾지 못하면 중단한다. 새 비밀 키는 0600 임시 파일에서 Secret Manager로 전송하고 삭제한다. 공개키·연락 URL·실행 계정만 Git 제외된 `.env`에 저장한다. 기존 사용자 기록과 Firestore 보안 규칙은 변경하지 않는다.
+
+CLI가 함수 배포를 마친 뒤 이미지 정리 정책 미설정만으로 오류를 반환하는 경우에는 그 정확한 메시지를 구분한다. 기존 저장소의 이미지 삭제 정책을 임의로 바꾸지는 않고 보관 비용 가능성을 알린다. 다른 배포 오류는 성공으로 처리하지 않는다. 이후 두 함수의 ACTIVE 상태와 실제 실행 계정, Scheduler ENABLED 상태와 OIDC 계정, `/health`의 버전·공개키 일치까지 검사해야 `HARUGYEOL_PUSH_DEPLOYED`를 출력한다.
+
+앱의 `push-config.json`은 `enabled:false`를 유지하되, 고정된 하루결 서버의 `discoveryApiBase`를 제공한다. 앱 시작 때 공개 `/health`를 한 번 확인하고 올바른 버전·공개키가 응답할 때에만 이 기기 연결 UI를 활성화한다. 서버 미배포/오류/잘못된 키는 기존 실행 중 알림 모드를 유지한다. 이 공개 확인은 배포 후 함수 요청량에 포함될 수 있다. 권한은 자동 요청하지 않는다. API 응답은 서버 전체 예약의 성공 증명이 아니므로, 위 스크립트 완료와 기기 테스트를 별도로 확인한다.
+
+서버 확인이 끝나면 iOS 16.4 이상 홈 화면의 하루결을 최신 버전으로 새로고침한 뒤 종 아이콘에서 **알림 사용과 대상·시각 저장 → 이 기기 알림 연결 → 서버 테스트 알림**을 실행한다. 앱을 닫거나 화면을 잠근 상태의 실제 수신은 사용자가 기기에서 확인해야 한다.
+
+Cloud Shell 배포 스크립트의 변경 방지·키 재사용·프로젝트 고정은 외부 명령 모형으로 검사했고, 자동 서버 발견의 성공/실패/키 오류/호스트 검증은 브라우저 모형으로 검사했다. 이 환경에서 실제 Google Cloud Shell 배포나 실제 휴대폰 수신을 검증했다고 주장하지 않는다.

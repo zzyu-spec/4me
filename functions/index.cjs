@@ -12,8 +12,9 @@ initializeApp();const db=getFirestore();
 const privateKey=defineSecret('WEB_PUSH_PRIVATE_KEY');
 const publicKey=defineString('WEB_PUSH_PUBLIC_KEY');
 const subject=defineString('WEB_PUSH_SUBJECT');
+const runtimeServiceAccount=defineString('PUSH_RUNTIME_SERVICE_ACCOUNT');
 const allowedOrigin='https://zzyu-spec.github.io';
-const options={region:'asia-northeast3',minInstances:0,maxInstances:1,memory:'256MiB',secrets:[privateKey]};
+const options={serviceAccount:runtimeServiceAccount,region:'asia-northeast3',minInstances:0,maxInstances:1,memory:'256MiB',secrets:[privateKey]};
 function sender(){webPush.setVapidDetails(subject.value(),publicKey.value(),privateKey.value());return webPush.sendNotification.bind(webPush)}
 const devices=db.collection('pushDevices');
 async function limitAPI(uid,path){const ref=db.collection('pushRateLimits').doc(hash(uid));await db.runTransaction(async tx=>{const old=(await tx.get(ref)).data()||{},minute=Math.floor(Date.now()/60000),same=old.minute===minute,count=same?(old.count||0):0,tests=same?(old.tests||0):0;if(count>=30||path==='/test'&&tests>=2)throw Object.assign(Error('잠시 후 다시 시도해 주세요.'),{status:429});tx.set(ref,{minute,count:count+1,tests:tests+(path==='/test'?1:0),expiresAt:Date.now()+86400000})})}
