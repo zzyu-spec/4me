@@ -18,7 +18,7 @@ export const initializeApp=(config,name)=>{const app={name,options:config};apps.
 export const getAuth=()=>auth;
 export const setPersistence=async()=>{};
 export const browserLocalPersistence={};
-export const initializeFirestore=()=>({});
+export const initializeFirestore=(app,settings,databaseId)=>{if(databaseId!=='arnit')throw Error('Expected named arnit database');window.testFirestoreDatabase=databaseId;return {databaseId}};
 export const persistentLocalCache=()=>({});
 export const persistentMultipleTabManager=()=>({});
 export const doc=(db,...parts)=>({path:parts.join('/')});

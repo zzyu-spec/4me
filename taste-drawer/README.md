@@ -4,7 +4,7 @@
 
 **배포:** https://zzyu-spec.github.io/4me/taste-drawer/
 
-기존 주소와 웹앱 ID는 유지합니다. `main`의 `taste-drawer/` 변경은 기존 GitHub Pages에서 자동 배포됩니다. 루트 4me 플래너는 그대로 유지하며, 기존 Firebase에 아르닛 전용 계정 저장 규칙을 추가합니다.
+기존 주소와 웹앱 ID는 유지합니다. `main`의 `taste-drawer/` 변경은 기존 GitHub Pages에서 자동 배포됩니다. 루트 4me 플래너는 그대로 유지하며, 같은 Firebase 프로젝트의 별도 데이터베이스 `arnit`을 사용합니다. 하루결 `(default)` 규칙은 바꾸지 않습니다.
 
 ## 기능
 
@@ -22,7 +22,7 @@
 
 ## 저장과 호환
 
-하루결의 Firebase 이메일 계정으로 로그인합니다. 사진·기록은 계정별 서버 경로에 저장하고, 오프라인과 저장 실패에 대비해 기기에도 보관합니다. **서버 규칙 게시가 선행되어야 계정 저장이 성공합니다.** [Firebase 적용 안내](docs/ACCOUNTS.md)를 확인해주세요.
+하루결의 Firebase 이메일 계정으로 로그인합니다. 사진·기록은 계정별 서버 경로에 저장하고, 오프라인과 저장 실패에 대비해 기기에도 보관합니다. **`arnit` 데이터베이스에 `taste-drawer/firestore.rules`를 게시해야 계정 저장이 성공합니다.** [Firebase 적용 안내](docs/ACCOUNTS.md)를 확인해주세요.
 
 브라우저 IndexedDB `taste-drawer-library-account-<uid>`에 메타데이터와 이미지 blob을 저장합니다. 동일 이미지 파일은 SHA-256 키로 중복 저장을 방지하고, 여러 서랍에서 항목 ID를 공유합니다. 같은 목표를 여러 목록에 넣으면 완료 상태도 공유됩니다.
 

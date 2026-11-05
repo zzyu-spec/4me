@@ -2,11 +2,12 @@
 
 ## 기존 프로젝트 재사용
 
-Firebase 프로젝트 `harugyeol-e7866`와 저장소 루트의 `firebase-config.json`, 고정 번들 `firebase-vendor.js`를 그대로 재사용합니다. 새 API 키·프로젝트·웹 앱을 만들지 않습니다. Firebase 앱 이름도 하루결과 같은 `harugyeol-<projectId>`이므로 같은 브라우저에서는 로그인 상태를 공유하고, 한쪽의 로그아웃도 다른 쪽에 반영됩니다.
+Firebase 프로젝트 `harugyeol-e7866`와 저장소 루트의 `firebase-config.json`, 고정 번들 `firebase-vendor.js`를 그대로 재사용합니다. 새 API 키·프로젝트·웹 앱을 만들지 않습니다. Firebase 앱 이름도 하루결과 같은 `harugyeol-<projectId>`이므로 같은 브라우저에서는 로그인 상태를 공유하고, 한쪽의 로그아웃도 다른 쪽에 반영됩니다. **아르닛 데이터는 새로 만든 이름 지정 데이터베이스 `arnit`에 저장합니다. 하루결의 `(default)` 데이터베이스와는 분리됩니다.**
 
 - 인증: 기존 이메일/비밀번호, 이메일 확인을 마친 계정만 허용
 - 계정별 기기 보관: IndexedDB `taste-drawer-library-account-<uid>`
 - 이전 비로그인 보관: `taste-drawer-library`와 `taste-drawer-v1` 원본 유지
+- 대상 Firestore 데이터베이스: `arnit`
 - 서버 현재 기록: `/users/{uid}/arnit/current`
 - 서버 이전 저장: `/users/{uid}/arnitBackups/{revision}`
 - 계정별 이미지: `/users/{uid}/arnitAssets/{sha256}/chunks/{index}`
@@ -15,8 +16,8 @@ Firebase 프로젝트 `harugyeol-e7866`와 저장소 루트의 `firebase-config.
 
 ## 필요한 Firebase 콘솔 작업
 
-1. 기존 프로젝트의 **Firestore Database → 규칙**을 엽니다.
-2. 저장소 루트 `firestore.rules` 전체 내용을 적용하고 **게시**합니다. 기존 하루결 규칙은 유지하고, 아르닛 경로만 추가한 파일입니다.
+1. 기존 프로젝트의 **Firestore Database → 데이터베이스 `arnit` 선택 → 규칙**을 엽니다.
+2. `taste-drawer/firestore.rules` 전체 내용을 적용하고 **게시**합니다. 이 파일은 `arnit` 전용입니다. 하루결 `(default)`의 규칙은 수정하지 않습니다. 앞서 안내한 저장소 루트의 통합 규칙 대신 이 전용 파일을 사용하세요.
 3. Authentication의 이메일/비밀번호 제공자가 이미 활성화되어 있고 하루결 로그인이 된다면 해당 설정은 변경하지 않습니다.
 4. 승인 도메인은 기존 `zzyu-spec.github.io`를 그대로 사용합니다. 도메인을 새로 바꾸는 경우에만 Authentication 설정의 승인 도메인을 검토합니다.
 
@@ -25,10 +26,10 @@ Firebase 프로젝트 `harugyeol-e7866`와 저장소 루트의 `firebase-config.
 Firebase CLI에 권한이 있는 운영 환경에서는 다음 명령으로 규칙만 배포할 수도 있습니다.
 
 ```sh
-firebase deploy --only firestore:rules --project harugyeol-e7866
+firebase deploy --only firestore:rules --config taste-drawer/firebase.json --project harugyeol-e7866
 ```
 
-`firebase.json`에는 기존 functions 설정을 보존하면서 firestore 규칙 파일 경로만 추가했습니다. 위 명령은 함수나 다른 호스팅을 배포하지 않습니다. 관리자 비밀 키나 서비스 계정 파일을 브라우저 코드에 넣지 않습니다.
+`taste-drawer/firebase.json`은 `database: "arnit"`를 명시하는 별도 배포 설정입니다. 위 명령은 `arnit` 규칙만 대상으로 하며 기본 데이터베이스·함수·다른 호스팅을 배포하지 않습니다. 관리자 비밀 키나 서비스 계정 파일을 브라우저 코드에 넣지 않습니다.
 
 ## 사진 저장과 한도
 
@@ -37,6 +38,10 @@ firebase deploy --only firestore:rules --project harugyeol-e7866
 새 기기에서는 매니페스트와 조각을 받아 원본 해시를 검증한 다음 라이브러리를 복원합니다. 원본 사이트 URL만 저장한 외부 이미지는 별도 업로드되지 않으며 해당 서버 정책을 따릅니다.
 
 기존 Firestore 읽기·쓰기·저장 할당량을 하루결과 함께 사용합니다. 계정 메타데이터는 750KB, 스냅샷의 이미지 참조는 최대 4096개, 한 이미지의 원본 업로드는 20MB까지입니다. 초과/쿼터/연결 오류 시 서버 성공으로 처리하지 않고 기기 저장과 전체 백업을 유지합니다. 대규모 라이브러리에서 별도 Storage/문서 분할로 바꾸려면 비용과 데이터 이전 방안을 별도 검토해야 합니다.
+
+## 데이터베이스 변경 시 기존 기록
+
+기기 라이브러리와 이미지, `(default)`의 서버 데이터는 삭제하지 않습니다. 동기화 revision과 해시만 데이터베이스별 키로 분리하여, 이전 `(default)`의 revision을 새 `arnit`에 잘못 적용하지 않습니다. 기기에 남은 아르닛 기록은 새 DB에 계정 저장할 수 있습니다. 기본 DB에만 있고 기기에는 없는 기록은 자동으로 대량 이전하지 않으므로 기존 전체 백업으로 복원해야 합니다.
 
 ## 기존 기록 연결
 

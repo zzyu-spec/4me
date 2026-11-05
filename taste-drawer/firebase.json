@@ -1,0 +1,8 @@
+{
+  "firestore": [
+    {
+      "database": "arnit",
+      "rules": "firestore.rules"
+    }
+  ]
+}

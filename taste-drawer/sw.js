@@ -1,5 +1,5 @@
 'use strict';
-const CACHE='taste-drawer-app-v4';
+const CACHE='taste-drawer-app-v5';
 const FILES=['./','./index.html','./style.css','./app.js','./data.js','./ui.js','./cloud.js','../firebase-vendor.js','../firebase-config.json','./icon.svg','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./icons/maskable-512.png','./icons/apple-touch-icon.png','./fonts/ArnitUI.woff2','./assets/arnit-header.webp'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('taste-drawer-app-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
