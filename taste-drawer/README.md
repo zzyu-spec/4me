@@ -8,11 +8,11 @@
 
 ## 기능
 
-- 무드보드: 여러 보드 생성/편집/복제/보관/휴지통/정렬, 이미지 콜라주 표지와 Masonry 그리드
+- 무드보드: 제목 없이 생성 가능, 여러 보드 편집/복제/보관/휴지통/정렬, 이미지 콜라주 표지와 Masonry 그리드
 - 이미지 업로드, 이미지 URL, 웹페이지 링크, 텍스트·색상 카드. 여러 보드에 같은 항목 연결
 - 콜라주: 포인터 이동/리사이즈, 키보드 및 숫자 편집, 앞뒤 배치, 그리드와 별도의 저장·복원
 - 팔레트: 직접 색 지정 및 기기 이미지에서 대표 색 추출
-- 취향 컬렉션: 사용자 카테고리, 감상·평점·태그·연결 보드
+- 취향 컬렉션: 생성 시 카테고리 선택, 같은 분류 항목만 저장·연결, 감상·평점·태그·연결 보드
 - 다중 위시리스트: 가격(직접 입력)·브랜드·우선순위·구매일·완료 보관
 - 다중 버킷리스트: 기간·달성률·목표일·공유 목표·완료일·후기·완료 사진
 - 아카이브: 완료 목표/구매 상품/보관한 무드보드와 컬렉션, 날짜·유형 필터
@@ -61,8 +61,10 @@ node taste-drawer/tests/server.cjs
 node taste-drawer/tests/archive.cjs
 node taste-drawer/tests/interactions.cjs
 node taste-drawer/tests/accounts.cjs
+node taste-drawer/tests/usability.cjs
+node taste-drawer/tests/forms.cjs
 ```
 
-[Firebase 계정 저장 안내](docs/ACCOUNTS.md) · [단계별 변경과 검사 결과](docs/STAGES.md) · [기존 코드 분석과 데이터 계획](docs/IMPLEMENTATION.md)
+[모바일 사용성 개선·검사](docs/USABILITY.md) · [Firebase 계정 저장 안내](docs/ACCOUNTS.md) · [단계별 변경과 검사 결과](docs/STAGES.md) · [기존 코드 분석과 데이터 계획](docs/IMPLEMENTATION.md)
 
 디자인: 크림·로즈·브라운 CSS 변수, 로컬 Pretendard 기반 Arnit UI 서브셋(OFL), arnit. 워드마크. `assets/arnit-header.webp`는 화면 장식용 생성 이미지이며 사용자 데이터에 저장하지 않습니다. 테스트용 데이터도 제품에 삽입하지 않습니다.
