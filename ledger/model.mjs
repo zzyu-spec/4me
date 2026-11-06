@@ -11,15 +11,16 @@ export const visible = (items,month,kind='all',search='') => items.filter(x=>!x.
 export const localDate = () => {const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
 export const CATEGORY_DEFAULTS = {
   expense:['식비','카페·간식','교통','쇼핑','생활','주거·통신','건강','문화','기타'],
-  income:['급여','용돈','부수입','이자','기타'],
+  income:['급여','용돈','이자','기타'],
   transfer:['이체']
 };
 export function validateCategory(value){
   if(!value || !/^[A-Za-z0-9][\w-]{0,79}$/.test(value.id||'') || ['constructor','prototype'].includes(value.id) || !['expense','income','transfer'].includes(value.kind) || typeof value.name!=='string' || !value.name.trim() || value.name.length>120 || typeof value.deleted!=='boolean' || !Number.isSafeInteger(value.revision) || value.revision<0 || typeof value.updatedAt!=='string' || value.updatedAt.length>120)throw Error('카테고리 이름과 종류를 확인해 주세요.');
   return value;
 }
+// Keep original default IDs: removing 부수입 must not shift existing 이자/기타 settings.
 export function categoryOptions(data,kind){
-  const records=Object.values(data.categories||{}).filter(x=>x.kind===kind),defaults=(CATEGORY_DEFAULTS[kind]||[]).map((name,index)=>({id:'default-'+kind+'-'+index,kind,name,deleted:false,revision:0,updatedAt:''}));
+  const records=Object.values(data.categories||{}).filter(x=>x.kind===kind),defaults=(CATEGORY_DEFAULTS[kind]||[]).map((name,index)=>({id:'default-'+kind+'-'+(kind==='income'?[0,1,3,4][index]:index),kind,name,deleted:false,revision:0,updatedAt:''}));
   const items=defaults.map(x=>records.find(r=>r.id===x.id)||x).concat(records.filter(x=>!defaults.some(d=>d.id===x.id)));
   return items.filter((x,index)=>!x.deleted&&items.findIndex(y=>!y.deleted&&y.name===x.name)===index);
 }
