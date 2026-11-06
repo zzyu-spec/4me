@@ -101,13 +101,30 @@ service cloud.firestore {
           && e.category is string && e.category.size() <= 120
           && e.payment is string && e.payment.size() >= 1 && e.payment.size() <= 120
           && e.toPayment is string && e.toPayment.size() <= 120
-          && (e.kind != 'transfer' || (e.toPayment.size() >= 1 && e.toPayment != e.payment))
           && e.note is string && e.note.size() <= 2000
           && e.deleted is bool && e.updatedAt is string && e.updatedAt.size() <= 120;
       }
       allow read: if owner(uid);
       allow create: if owner(uid) && validEntry() && request.resource.data.revision == 1;
       allow update: if owner(uid) && validEntry()
+        && request.resource.data.revision == resource.data.revision + 1;
+      allow delete: if false;
+    }
+    match /users/{uid}/ledgerCategories/{categoryId} {
+      function validCategory() {
+        let c = request.resource.data;
+        return c.keys().hasAll(['id','kind','name','revision','deleted','updatedAt'])
+          && c.keys().hasOnly(['id','kind','name','revision','deleted','updatedAt'])
+          && c.id == categoryId && categoryId.matches('^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$')
+          && !(categoryId in ['constructor','prototype'])
+          && c.kind in ['expense','income','transfer']
+          && c.name is string && c.name.size() >= 1 && c.name.size() <= 120
+          && c.revision is int && c.revision >= 1 && c.deleted is bool
+          && c.updatedAt is string && c.updatedAt.size() <= 120;
+      }
+      allow read: if owner(uid);
+      allow create: if owner(uid) && validCategory() && request.resource.data.revision == 1;
+      allow update: if owner(uid) && validCategory()
         && request.resource.data.revision == resource.data.revision + 1;
       allow delete: if false;
     }
