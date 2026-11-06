@@ -18,3 +18,9 @@
 .top .header-actions>button:hover{background:var(--accent-soft)}.top .header-actions>button>svg{display:block;width:25px;height:25px}
 .header-tagline{grid-column:1/-1;margin:0;color:var(--muted);font-size:12px}
 @media(max-width:480px){.top{column-gap:4px;row-gap:4px}.top .brand{gap:6px}.top .brand h1{font-size:23px}.top .logo{width:30px;height:30px;border-radius:10px}.top .logo:before{width:12px;height:12px;left:7px;top:6px}.top .logo:after{width:10px;height:10px;right:6px;bottom:6px;box-shadow:-3px 2px 0 -1px var(--accent)}.top .header-actions{gap:0}.top .header-actions>button{width:40px;min-width:40px;height:44px}.top .header-actions>button>svg{width:24px;height:24px}.header-tagline{font-size:11px}}
+
+/* Ledger sits beside the brand across all six screens. */
+.top .brand-title-row{display:flex;align-items:center;gap:8px}.top .logo{flex:none}
+.header-ledger-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 6px;border-radius:8px;font-size:12px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap}
+.header-ledger-link:hover,.header-ledger-link:focus-visible{background:var(--accent-soft)}
+@media(max-width:380px){.top .brand-title-row{gap:3px}.header-ledger-link{padding:0 3px;font-size:11px}.top .header-actions>button{width:32px;min-width:32px}.top .header-actions>button>svg{width:22px;height:22px}}

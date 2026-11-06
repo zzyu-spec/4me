@@ -8,4 +8,4 @@ export async function account() {
   const db=sdk.initializeFirestore(app,{localCache:sdk.persistentLocalCache({tabManager:sdk.persistentMultipleTabManager()})});
   return {sdk,auth,db};
 }
-export const friendly = e => /permission-denied/.test(e?.code||'')?'계정 저장 권한이 아직 준비되지 않았어요. 기기 기록은 유지되며 보안 규칙 배포 후 다시 동기화할 수 있어요.':/network|unavailable|offline/.test((e?.code||'')+' '+(e?.message||''))?'인터넷 연결을 확인해 주세요. 기록은 이 기기에 보관돼요.':e?.message||'처리하지 못했어요. 기기 기록은 유지됩니다.';
+export const friendly = e => /permission-denied/.test(e?.code||'')?'계정 저장 권한을 확인하지 못했어요. 로그인 계정을 확인하고 다시 동기화를 눌러 주세요. 기기 기록은 유지됩니다.':/network|unavailable|offline/.test((e?.code||'')+' '+(e?.message||''))?'인터넷 연결을 확인해 주세요. 기록은 이 기기에 보관돼요.':e?.message||'처리하지 못했어요. 기기 기록은 유지됩니다.';
