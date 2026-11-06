@@ -1,6 +1,6 @@
 import {validate} from './model.mjs';
 export class LedgerStore {
-  constructor(uid,onChange=()=>{}) {this.uid=uid;this.key='harugyeol-ledger-v1:'+uid;this.onChange=onChange;this.active=true;this.busy=false;this.conflicts=new Map();const raw=localStorage.getItem(this.key);this.data=raw?JSON.parse(raw):{version:1,items:{},pending:{},backups:[]};if(this.data.version!==1||!this.data.items||!this.data.pending||!Array.isArray(this.data.backups))throw Error('기기 가계부 형식을 읽지 못했어요. 원본은 그대로 보존했습니다.');Object.values(this.data.items).forEach(validate);}
+  constructor(uid,onChange=()=>{}) {this.uid=uid;this.key='harugyeol-ledger-v1:'+uid;this.onChange=onChange;this.active=true;this.busy=false;this.conflicts=new Map();const raw=localStorage.getItem(this.key);this.data=raw?JSON.parse(raw):{version:1,items:{},pending:{},backups:[]};if(this.data.version!==1||!this.data.items||!this.data.pending||!Array.isArray(this.data.backups))throw Error('기기 가계부 형식을 읽지 못했어요. 원본은 그대로 보존했습니다.');for(const [id,item] of Object.entries(this.data.items)){validate(item);if(item.id!==id)throw Error('기기 기록 식별자가 맞지 않아요. 원본은 보존됩니다.');}}
   commit(next) {if(!this.active)throw Error('계정이 바뀌었어요. 다시 열어 주세요.');if(localStorage.getItem(this.key)!==this.raw)throw Error('다른 탭에서 가계부가 바뀌었어요. 작성 내용을 복사한 뒤 새로고침해 주세요.');localStorage.setItem(this.key,JSON.stringify(next));this.data=next;this.raw=JSON.stringify(next);this.onChange();}
   start() {this.raw=localStorage.getItem(this.key);return this;}
   entries() {return Object.values(this.data.items);}
