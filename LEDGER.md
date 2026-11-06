@@ -46,3 +46,9 @@ npm exec --yes --package=firebase-tools@15.35.0 -- firebase deploy --only firest
 ## 백업 UI 제거
 
 사용자 요청에 따라 가계부의 백업 다운로드/가져오기 버튼과 관련 안내·사용하지 않는 처리 코드를 제거했다. 명시적인 저장 후 기기 저장·계정 자동 동기화, 실패 시 재시도, 내부 충돌 복구 기록 및 기존 v1 데이터 형식은 유지한다. 입력 중 자동 저장으로 변경한 것은 아니다. 하루결의 백업 기능은 변경하지 않는다.
+
+## 일기 연결 초기화 오류 수정
+
+일기의 연결 실패를 실제 번들 SDK로 재현했다. 이미 시작한 Firestore에 새 persistentLocalCache 인스턴스를 넘겨 다시 initializeFirestore하면 failed-precondition이 발생한다. firebase-context.mjs에서 Firebase App 객체별 기본 Firestore 인스턴스를 공유하고 cloud.js와 ledger/account.mjs 모두 이 경로를 사용한다. 기존 캐시·인증·데이터·보안 규칙은 변경하지 않는다. 연결 실패 시 오류 원인과 코드도 표시한다.
+
+`node tools/ledger-shared-firebase.test.cjs`: 실제 Firebase SDK에서 이전 오류 재현 및 하루결 먼저/가계부 먼저 두 초기화 순서의 인스턴스 공유 확인. 외부 요청을 차단한 검사이며 운영 계정 로그인·서버 권한 검증을 대신하지 않는다. 가계부 업데이트 팝업 비활성화 지시는 유지한다.
