@@ -24,3 +24,6 @@
 .header-ledger-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 6px;border-radius:8px;font-size:12px;font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap}
 .header-ledger-link:hover,.header-ledger-link:focus-visible{background:var(--accent-soft)}
 @media(max-width:380px){.top .brand-title-row{gap:3px}.header-ledger-link{padding:0 3px;font-size:11px}.top .header-actions>button{width:32px;min-width:32px}.top .header-actions>button>svg{width:22px;height:22px}}
+
+.header-ledger-link{gap:2px}.header-ledger-link>svg{display:block;flex:none}
+@media(max-width:380px){.header-ledger-link{padding-left:1px;padding-right:1px}}
