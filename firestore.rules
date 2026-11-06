@@ -86,6 +86,31 @@ service cloud.firestore {
         allow delete: if false;
       }
     }
+    // Separate ledger: shared verified Auth, no access to other owners or planner writes.
+    match /users/{uid}/ledgerEntries/{entryId} {
+      function validEntry() {
+        let e = request.resource.data;
+        return e.keys().hasAll(['id','revision','date','kind','amount','title','category','payment','toPayment','note','deleted','updatedAt'])
+          && e.keys().hasOnly(['id','revision','date','kind','amount','title','category','payment','toPayment','note','deleted','updatedAt'])
+          && e.id == entryId && entryId.matches('^[A-Za-z0-9_-]{1,80}$')
+          && e.revision is int && e.revision >= 1
+          && e.date is string && e.date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+          && e.kind in ['expense','income','transfer']
+          && e.amount is int && e.amount >= 1 && e.amount <= 1000000000000
+          && e.title is string && e.title.size() >= 1 && e.title.size() <= 120
+          && e.category is string && e.category.size() <= 120
+          && e.payment is string && e.payment.size() >= 1 && e.payment.size() <= 120
+          && e.toPayment is string && e.toPayment.size() <= 120
+          && (e.kind != 'transfer' || (e.toPayment.size() >= 1 && e.toPayment != e.payment))
+          && e.note is string && e.note.size() <= 2000
+          && e.deleted is bool && e.updatedAt is string && e.updatedAt.size() <= 120;
+      }
+      allow read: if owner(uid);
+      allow create: if owner(uid) && validEntry() && request.resource.data.revision == 1;
+      allow update: if owner(uid) && validEntry()
+        && request.resource.data.revision == resource.data.revision + 1;
+      allow delete: if false;
+    }
     match /{document=**} {
       allow read, write: if false;
     }

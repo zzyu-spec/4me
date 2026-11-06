@@ -1,0 +1,11 @@
+export async function account() {
+  const sdk=await import('../firebase-vendor.js');
+  const response=await fetch('../firebase-config.json',{cache:'no-store'});
+  if(!response.ok)throw Error('계정 설정을 불러오지 못했어요.');
+  const config=await response.json(),name='harugyeol-'+config.projectId;
+  const app=sdk.getApps().find(x=>x.name===name)||sdk.initializeApp(config,name),auth=sdk.getAuth(app);
+  await sdk.setPersistence(auth,sdk.browserLocalPersistence);await auth.authStateReady();
+  const db=sdk.initializeFirestore(app,{localCache:sdk.persistentLocalCache({tabManager:sdk.persistentMultipleTabManager()})});
+  return {sdk,auth,db};
+}
+export const friendly = e => /permission-denied/.test(e?.code||'')?'계정 저장 권한이 아직 준비되지 않았어요. 기기 기록은 유지되며 보안 규칙 배포 후 다시 동기화할 수 있어요.':/network|unavailable|offline/.test((e?.code||'')+' '+(e?.message||''))?'인터넷 연결을 확인해 주세요. 기록은 이 기기에 보관돼요.':e?.message||'처리하지 못했어요. 기기 기록은 유지됩니다.';

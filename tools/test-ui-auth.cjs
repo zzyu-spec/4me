@@ -5,6 +5,10 @@ exports.useAuthenticatedUI = async page => {
   const context = page.context();
   if (installed.has(context)) return;
   installed.add(context);
+  // Other UI tests dismiss the separately tested release notice before interacting.
+  const source = require('node:fs').readFileSync(require('node:path').join(__dirname, '../release-notes.js'), 'utf8');
+  const release = source.match(/id: '([^']+)'/)[1];
+  await context.addInitScript(id => localStorage.setItem('harugyeol-release-seen', id), release);
   await context.route('**/cloud.js', route => route.fulfill({
     contentType: 'application/javascript',
     body: `window.harugyeolCloud={changed(){},open(){},sync:async()=>{},isSignedIn:()=>true};document.body.classList.remove('auth-pending','auth-required');document.body.classList.add('auth-ready');`
