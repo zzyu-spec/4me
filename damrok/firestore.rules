@@ -1,0 +1,67 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function owner(uid) {
+      return database == 'damrok' && request.auth != null && request.auth.uid == uid
+        && request.auth.token.email_verified == true;
+    }
+    // Damrok: account-private records, separate from planner, ledger and Arnit.
+    match /users/{uid}/damrokEntries/{entryId} {
+      function validEntry() {
+        let e = request.resource.data;
+        return e.keys().hasAll(['id','type','title','note','collection','tags','created','favorite','deleted','revision','updatedAt'])
+          && e.keys().hasOnly(['id','type','title','note','collection','tags','created','favorite','deleted','revision','updatedAt','url','imageId','filename','updated'])
+          && entryId.matches('^[a-f0-9-]{36}$') && e.id == entryId
+          && e.type in ['link','image','page','file','space']
+          && e.title is string && e.title.size() >= 1 && e.title.size() <= 150
+          && e.note is string && e.note.size() <= 100000
+          && e.collection is string && e.collection.size() <= 60
+          && e.tags is list && e.tags.size() <= 100
+          && e.created is int && e.created >= 0
+          && e.favorite is bool && e.deleted is bool
+          && (!('updated' in e) || (e.updated is int && e.updated >= 0))
+          && e.revision is int && e.revision >= 1
+          && e.updatedAt is string && e.updatedAt.size() <= 40
+          && ((e.type == 'link' && e.url is string && e.url.size() <= 12000 && e.url.matches('^https?://.+'))
+            || (e.type in ['image','file'] && e.imageId is string && e.imageId.matches('^(image|file)-[0-9a-f]{64}$') && e.filename is string && e.filename.size() <= 250) || e.type in ['page','space']);
+      }
+      allow read: if owner(uid);
+      allow create: if owner(uid) && validEntry() && request.resource.data.revision == 1;
+      allow update: if owner(uid) && validEntry() && request.resource.data.revision == resource.data.revision + 1;
+      allow delete: if false;
+    }
+    match /users/{uid}/damrokAssets/{assetId} {
+      function validManifest() {
+        return assetId.matches('^(image|file)-[0-9a-f]{64}$')
+          && request.resource.data.keys().hasOnly(['chunkCount', 'characters'])
+          && request.resource.data.chunkCount is int
+          && request.resource.data.chunkCount >= 1
+          && request.resource.data.chunkCount <= 25
+          && request.resource.data.characters is int
+          && request.resource.data.characters > 0
+          && request.resource.data.characters <= 11200000;
+      }
+      allow read: if owner(uid);
+      allow create: if owner(uid) && validManifest();
+      allow update: if owner(uid) && validManifest() && request.resource.data == resource.data;
+      allow delete: if false;
+      match /chunks/{index} {
+        function validChunk() {
+          return assetId.matches('^(image|file)-[0-9a-f]{64}$')
+            && index.matches('^[0-9]{1,2}$')
+            && request.resource.data.keys().hasOnly(['index', 'data'])
+            && request.resource.data.index is int
+            && request.resource.data.index >= 0
+            && request.resource.data.index < 25
+            && request.resource.data.data is string
+            && request.resource.data.data.size() <= 450000;
+        }
+        allow read: if owner(uid);
+        allow create: if owner(uid) && validChunk();
+        allow update: if owner(uid) && validChunk() && request.resource.data == resource.data;
+        allow delete: if false;
+      }
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

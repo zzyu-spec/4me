@@ -1,0 +1,6 @@
+{
+  "name": "damrok-browser-checks",
+  "private": true,
+  "scripts": {"test": "node named-db.cjs"},
+  "devDependencies": {"playwright": "1.62.1"}
+}
