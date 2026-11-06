@@ -1,4 +1,4 @@
-import {LibraryStore,validateLibrary,imageAsset,blobData,blank} from './data.js?v=backdrop-close-1';
+import {LibraryStore,validateLibrary,imageAsset,blobData,blank} from './data.js?v=small-dialogs-1';
 export const DATABASE_ID='arnit';
 const CHUNK=450000,MAX_PAYLOAD=750000;
 const digest=async text=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text)))].map(n=>n.toString(16).padStart(2,'0')).join('');
