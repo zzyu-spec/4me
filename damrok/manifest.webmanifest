@@ -10,13 +10,13 @@
   "theme_color": "#f6f5f0",
   "icons": [
     {
-      "src": "icons/clover-36c16c1998-192.png",
+      "src": "icons/clover-94addd7716-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icons/clover-36c16c1998-512.png",
+      "src": "icons/clover-94addd7716-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
