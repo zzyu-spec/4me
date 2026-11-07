@@ -5,8 +5,9 @@
     "test": "node named-db.cjs",
     "test:updates": "node --test updates.test.mjs",
     "test:live": "node live-updates.cjs",
-    "test:sections": "node --test sections.test.mjs && node sections.cjs",
-    "test:auth": "node --test auth-ready.test.mjs && node auth-prefix.cjs"
+    "test:sections": "node --test sections.test.mjs",
+    "test:auth": "node --test auth-ready.test.mjs && node auth-prefix.cjs",
+    "test:pages": "node --test page-node.test.mjs && node child-pages.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"
