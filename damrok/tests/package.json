@@ -1,6 +1,12 @@
 {
   "name": "damrok-browser-checks",
   "private": true,
-  "scripts": {"test": "node named-db.cjs"},
-  "devDependencies": {"playwright": "1.62.1"}
+  "scripts": {
+    "test": "node named-db.cjs",
+    "test:updates": "node --test updates.test.mjs",
+    "test:live": "node live-updates.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
 }

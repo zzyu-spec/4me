@@ -95,3 +95,37 @@ firebase deploy --only firestore:rules --project harugyeol-e7866 --config fireba
 ## 검증 기록
 
 실행한 모형 브라우저 검사와 운영 Firebase의 검증은 구분합니다. [검증 결과](VALIDATION.md)를 참고하세요.
+
+
+## 6. 기존 주소에서 자동 동기화·새 화면 적용
+
+- 기존 주소 `/4me/damrok/`를 그대로 사용합니다. 처음 이 기능을 받는 기존 탭은 한 번 새로고침해야 합니다. 그 뒤에는 새 버전 링크를 따로 열 필요가 없습니다.
+- 새 배포는 페이지가 보이는 동안 약 30초마다 확인하며, 탭 복귀·인터넷 재연결 때 바로 재확인합니다. 배포 버전과 HTML이 일치하는 경우에만 적용합니다.
+- 편집 창·로그인 창 등 열린 창, 처리 중인 저장·동기화, 해결 전 충돌이 있으면 자동 새로고침을 보류합니다. 저장을 마치고 창을 닫으면 자동 적용합니다. 오프라인에서는 자동 새로고침하지 않습니다.
+- 각 배포에서 내용 해시로 `damrok/releases/<hash>/` 파일과 `release.json`을 생성합니다. 화면과 모듈·스타일이 같은 버전을 사용하며, 공유 Firebase 파일도 새 버전 주소로 불러옵니다. 사용자 자료를 삭제하거나 브라우저 저장소를 초기화하지 않습니다.
+- 데이터 변경은 기존 `damrok` 실시간 구독으로 감지합니다. 탭 복귀·연결 복구 때 재동기화하고, 페이지가 보일 때 45초 주기로 누락도 재확인합니다. 서버 권한과 연결이 정상이어야 기기 간 동기화됩니다.
+- 열어둔 기록 보기에도 다른 기기 수정 사항이 반영됩니다. 편집 중인 폼의 입력은 바꾸지 않으며, 오래된 버전으로 저장하려 하면 기존 충돌 보호를 적용합니다.
+
+자동 업데이트 검사를 재현하려면 저장소 루트에서:
+
+```sh
+node --test scripts/build-site.test.mjs damrok/tests/updates.test.mjs
+```
+
+실제 브라우저 두 개와 모형 Firebase를 사용하는 자동 반영 검사:
+
+```sh
+npm --prefix damrok/tests install
+cd damrok/tests
+npx playwright install chromium
+npm run test:live
+```
+
+기존 계정/이전 브라우저 검사는 배포와 동일한 경로를 만들고 실행합니다.
+
+```sh
+node scripts/build-site.mjs
+python3 -m http.server 4196 --bind 127.0.0.1 --directory _site
+# 다른 터미널에서
+npm --prefix damrok/tests test
+```

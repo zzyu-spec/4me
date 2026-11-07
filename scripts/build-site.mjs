@@ -1,3 +1,4 @@
+import {createDamrokRelease} from './damrok-release.mjs';
 import {cpSync, mkdirSync, readdirSync, rmSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
@@ -14,6 +15,7 @@ export function build() {
     }
   }
   cpSync(path.join(root,'.nojekyll'),path.join(output,'.nojekyll'));
+  createDamrokRelease(root,output);
   return output;
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

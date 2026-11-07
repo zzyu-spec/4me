@@ -15,11 +15,21 @@ test('every service file retains its exact bytes and previous public path', () =
   for (const [source,target] of [['harugyeol',''],['shared',''],['arnit','taste-drawer'],['damrok','damrok']]) {
     for (const file of walk(path.join(root,source))) {
       const relative=path.relative(path.join(root,source),file);
-      assert.deepEqual(readFileSync(path.join(output,target,relative)),readFileSync(file),relative);
+      if(!(source==='damrok'&&relative==='index.html'))assert.deepEqual(readFileSync(path.join(output,target,relative)),readFileSync(file),relative);
       count++;
     }
   }
-  assert.equal(walk(output).length,count+1,'no file collision or unexpected output');
+  const release=JSON.parse(readFileSync(path.join(output,'damrok/release.json'),'utf8'));
+  const copies=walk(path.join(output,'damrok/releases',release.version));
+  assert.equal(walk(output).length,count+2+copies.length,'only the release manifest and versioned assets are added');
+  const html=readFileSync(path.join(output,'damrok/index.html'),'utf8');
+  assert.match(release.version,/^[a-f0-9]{64}$/);
+  assert(html.includes('content="'+release.version+'"'));
+  assert(html.includes('bootstrap.mjs?v='+release.version));
+  assert(html.includes('href="'+release.stylesheet+'"'));
+  const account=readFileSync(path.join(output,'damrok/releases',release.version,'account.mjs'),'utf8');
+  assert(account.includes('../../../firebase-vendor.js?v='+release.version));
+  assert(readFileSync(path.join(output,'damrok/releases',release.version,'style.css'),'utf8').includes('../../../taste-drawer/fonts/ArnitUI.woff2?v='+release.version));
   for (const publicPath of ['index.html','sw.js','firebase-vendor.js','firebase-config.json','firebase-context.mjs','ledger/account.mjs','taste-drawer/index.html','taste-drawer/sw.js','damrok/index.html','damrok/account.mjs','functions/reminder-model.js']) {
     assert(statSync(path.join(output,publicPath)).isFile(),publicPath);
   }
