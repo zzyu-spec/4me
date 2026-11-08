@@ -31,16 +31,26 @@ const rdone=(id,date)=>state.routineLogs[id+'_'+date]?.done===true;
 const pending=t=>!['done','cancelled','moved'].includes(t.status)&&!todoIsCross(t)&&!todoCategoryCompletion(t.section||'');
 return {state,repeatsOn,dayEvents,dayTodos,dayRoutines,rdone,pending,eventWindow};
 }
+// New and already-deployed server payloads share the same display contract.
+function notificationText(message){
+ const title=String(message.title||''),body=String(message.body||'');let content;
+ if(title==='하루결')content=body;
+ else if(String(message.tag||'').startsWith('digest:')||title==='하루결 · 오늘의 할 일')content=body.replace(/ · /g,'\n').replace(/ 외 (\d+)개$/,'\n외 $1개');
+ else if(title.startsWith('하루결 · '))content=title.slice('하루결 · '.length);
+ else if(title==='하루결 테스트 알림'||title==='하루결 알림 테스트')content=body;
+ else content=title||body;
+ return {title:'하루결',body:content.slice(0,400)};
+}
 function dueAt(snapshot,at,zone){
  if(!validZone(zone))throw Error('Invalid IANA time zone');
  const m=createModel(snapshot),s=snapshot.reminders||{};if(s.enabled!==true)return [];
  const {date,clock}=wallParts(at,zone),messages=[],events=Array.isArray(s.events)?s.events:[],todos=Array.isArray(s.todos)?s.todos:[],routines=Array.isArray(s.routines)?s.routines:[];
  const defaultCategory=(snapshot.eventCategories||[]).find(c=>['기본','카테고리 미정'].includes(c.name))?.name||(snapshot.eventCategories||[])[0]?.name||'기본';
  const category=e=>e.category||defaultCategory;
- const push=(kind,item,d,time,offset,title,body)=>messages.push({tag:kind+':'+item.id+':'+d+':'+time+':'+offset,title,body,route:{view:kind==='event'?'calendar':kind==='todo'?'todos':'routines',date:d,id:item.id}});
+ const push=(kind,item,d,time,offset,title,body)=>messages.push({tag:kind+':'+item.id+':'+d+':'+time+':'+offset,title:'하루결',body:String(item.title||''),route:{view:kind==='event'?'calendar':kind==='todo'?'todos':'routines',date:d,id:item.id}});
  if((s.times||[]).includes(clock)){
   const entries=[...m.dayEvents(date).filter(e=>{const w=m.eventWindow(e,date),last=w.end||w.start;return events.includes(category(e))&&(!last||last>=clock)}),...m.dayTodos(date).filter(t=>todos.includes(t.section||'')&&m.pending(t)),...m.dayRoutines(date).filter(r=>routines.includes(r.id)&&!m.rdone(r.id,date))];
-  if(entries.length)messages.push({tag:'digest:'+date+':'+clock,title:'하루결 · 오늘의 할 일',body:entries.slice(0,3).map(i=>i.title).join(' · ')+(entries.length>3?' 외 '+(entries.length-3)+'개':''),route:{view:'home',date,id:''}});
+  if(entries.length)messages.push({tag:'digest:'+date+':'+clock,title:'하루결',body:entries.slice(0,3).map(i=>i.title).join('\n')+(entries.length>3?'\n외 '+(entries.length-3)+'개':''),route:{view:'home',date,id:''}});
  }
  // Includes up to a week of advance notice and yesterday/today around offsets.
  for(let n=0;n<=8;n++)for(const e of m.dayEvents(plusDays(date,n))){
@@ -62,7 +72,7 @@ function dueAt(snapshot,at,zone){
 }
 function dueWindow(snapshot,now,zone,minutes=10){const out=[];for(let i=0;i<minutes;i++){const at=Math.floor(now/60000)*60000-i*60000;for(const message of dueAt(snapshot,at,zone))out.push({...message,scheduledAt:at})}return [...new Map(out.map(x=>[x.tag,x])).values()]}
 function decodeSnapshot(snapshot){const prefix='~harugyeol-key~',marker=prefix+'version';if(snapshot?.[marker]===undefined)return snapshot;if(snapshot[marker]!==1)throw Error('Unsupported cloud field encoding');function decode(v){if(!v||typeof v!=='object')return v;if(Array.isArray(v))return v.map(decode);return Object.fromEntries(Object.entries(v).filter(([k])=>k!==marker).map(([k,x])=>[k.startsWith(prefix)?new TextDecoder('utf-8',{fatal:true}).decode(Uint8Array.from(k.slice(prefix.length).match(/../g)||[],x=>parseInt(x,16))):k,decode(x)]))}return decode(snapshot)}
-const api={validDate,validTime,validZone,wallParts,wallEpoch,createModel,dueAt,dueWindow,decodeSnapshot};
+const api={notificationText,validDate,validTime,validZone,wallParts,wallEpoch,createModel,dueAt,dueWindow,decodeSnapshot};
 if(typeof module!=='undefined'&&module.exports)module.exports=api;else globalThis.HarugyeolReminderModel=api;
 
 })();
