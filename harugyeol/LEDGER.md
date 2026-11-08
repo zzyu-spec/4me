@@ -58,3 +58,9 @@ npm exec --yes --package=firebase-tools@15.35.0 -- firebase deploy --only firest
 - 일기 소비 창을 가계부 합계·내역, 별도 버튼 행, 소비 메모, 완료 영역으로 분리했다. 연결 오류는 일반 크기 문단으로 표시하고 버튼은 flex 줄바꿈과 44px 터치 영역을 사용한다. 메모 입력과 내부 저장 데이터는 유지한다.
 - `ledger/account.mjs` 설정 요청을 `new URL('../firebase-config.json', import.meta.url)`로 고정했다. 이전 fetch 문자열은 일기 `/4me/`에서 `/firebase-config.json`으로 해석되어 운영 배포 경로에서 404가 날 수 있었다. 모듈 기준으로 `/4me/firebase-config.json`을 요청한다.
 - `tools/journal-spending-layout.test.cjs`: `/4me/` 접두 경로를 실제로 구성해 정상/설정 파일 실패/권한 실패, 라이트/다크, 320×568·390·588px에서 경계·순서·메모 보존을 확인한다. SDK와 서버 응답은 모형이며 iPhone 실기기 및 실제 사용자 계정은 별도 검증 대상이다.
+
+## 새 기록 입력창 압축
+
+종류/날짜 및 카테고리/결제수단을 각각 2열로 배치하고 금액/내역은 전체 너비로 유지했다. 카테고리 관리 버튼은 카테고리 제목 옆으로 이동했다. 빈 메모는 접고 기존 메모가 있으면 펼친다. date 입력에 명시적 width/max-width/min-inline-size/height와 WebKit 표시 정렬을 적용해 iOS의 기본 날짜 컨트롤이 칸 밖으로 넘치는 것을 방지한다. 입력명·저장 데이터·수입/지출 구분·기존 이체 정보는 변경하지 않는다.
+
+`tools/ledger-editor-layout.test.cjs`: 320–588px 라이트/다크에서 두 열 정렬과 날짜 경계, 작성 중 카테고리 추가 시 입력 유지, 저장/재열람/메모 보존을 검사한다. Chromium 검사이며 실제 iPhone Safari는 별도 검증 대상이다. 가계부 업데이트 팝업은 계속 비활성화한다.
