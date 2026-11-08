@@ -27,3 +27,24 @@
 
 .header-ledger-link{gap:2px}.header-ledger-link>svg{display:block;flex:none}
 @media(max-width:380px){.header-ledger-link{padding-left:1px;padding-right:1px}}
+
+/* Spending dialog: independent summary, memo and actions, including failure states. */
+.ledger-journal-summary{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;min-width:0;padding:0;margin:0}
+.ledger-journal-summary>h3{font-size:13px;font-weight:600;color:var(--muted);margin:0;line-height:1.5}
+.ledger-journal-amount{display:block;font-size:22px;line-height:1.3;color:var(--ink);overflow-wrap:anywhere}
+.ledger-journal-status,.ledger-journal-error{font-size:13px;line-height:1.65;color:var(--muted);margin:0;overflow-wrap:anywhere}
+.ledger-journal-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;min-width:0}
+.ledger-journal-actions>.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;max-width:100%;padding:10px 14px;font-size:13px;line-height:1.4;text-decoration:none;white-space:normal;word-break:keep-all;box-sizing:border-box}
+.ledger-journal-entries{list-style:none;padding:0;margin:0;display:grid;gap:9px}
+.ledger-journal-entries>li{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-size:13px;line-height:1.6;min-width:0}
+.ledger-journal-entries>li>span:first-child{min-width:0;overflow-wrap:anywhere}.ledger-journal-entries>li>span:last-child{flex:none;white-space:nowrap}.ledger-journal-more{color:var(--muted)}
+[data-record-dialog="spending"]>.panel{display:flex;flex-direction:column;gap:18px;max-height:calc(100dvh - 32px);padding:20px}
+[data-record-dialog="spending"] .modal-heading{flex:none;gap:12px;margin:0}[data-record-dialog="spending"] .modal-heading>h2{margin:0}
+[data-record-dialog="spending"] .journal-record-card{min-height:0;flex:1;overflow:auto;overscroll-behavior:contain;flex-shrink:1}
+[data-record-dialog="spending"] .journal-record-content{display:flex;flex-direction:column;gap:18px;padding:0!important}
+.ledger-consumption-memo{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0;border-top:1px solid var(--line);padding-top:16px}
+.ledger-consumption-memo>span{font-size:13px;color:var(--muted)}.ledger-consumption-memo>textarea{box-sizing:border-box;display:block;width:100%;min-width:0;max-width:100%;min-height:100px;resize:vertical}
+[data-record-dialog="spending"] .journal-record-dialog-actions{flex:none;margin:0;padding-top:14px;border-top:1px solid var(--line);gap:12px}
+[data-record-dialog="spending"] .journal-record-dialog-actions>.small{min-width:0;font-size:11px;line-height:1.5}
+.journal-detail-panel>.ledger-journal-summary{margin:18px 0;padding:16px 0;border-top:1px solid var(--line)}
+@media(max-width:360px){[data-record-dialog="spending"]>.panel{padding:16px}.ledger-journal-actions>.btn{padding:10px 12px}}

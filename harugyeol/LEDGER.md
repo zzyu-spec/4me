@@ -52,3 +52,9 @@ npm exec --yes --package=firebase-tools@15.35.0 -- firebase deploy --only firest
 일기의 연결 실패를 실제 번들 SDK로 재현했다. 이미 시작한 Firestore에 새 persistentLocalCache 인스턴스를 넘겨 다시 initializeFirestore하면 failed-precondition이 발생한다. firebase-context.mjs에서 Firebase App 객체별 기본 Firestore 인스턴스를 공유하고 cloud.js와 ledger/account.mjs 모두 이 경로를 사용한다. 기존 캐시·인증·데이터·보안 규칙은 변경하지 않는다. 연결 실패 시 오류 원인과 코드도 표시한다.
 
 `node tools/ledger-shared-firebase.test.cjs`: 실제 Firebase SDK에서 이전 오류 재현 및 하루결 먼저/가계부 먼저 두 초기화 순서의 인스턴스 공유 확인. 외부 요청을 차단한 검사이며 운영 계정 로그인·서버 권한 검증을 대신하지 않는다. 가계부 업데이트 팝업 비활성화 지시는 유지한다.
+
+## 오늘의 소비 모바일 레이아웃 / 배포 경로 수정
+
+- 일기 소비 창을 가계부 합계·내역, 별도 버튼 행, 소비 메모, 완료 영역으로 분리했다. 연결 오류는 일반 크기 문단으로 표시하고 버튼은 flex 줄바꿈과 44px 터치 영역을 사용한다. 메모 입력과 내부 저장 데이터는 유지한다.
+- `ledger/account.mjs` 설정 요청을 `new URL('../firebase-config.json', import.meta.url)`로 고정했다. 이전 fetch 문자열은 일기 `/4me/`에서 `/firebase-config.json`으로 해석되어 운영 배포 경로에서 404가 날 수 있었다. 모듈 기준으로 `/4me/firebase-config.json`을 요청한다.
+- `tools/journal-spending-layout.test.cjs`: `/4me/` 접두 경로를 실제로 구성해 정상/설정 파일 실패/권한 실패, 라이트/다크, 320×568·390·588px에서 경계·순서·메모 보존을 확인한다. SDK와 서버 응답은 모형이며 iPhone 실기기 및 실제 사용자 계정은 별도 검증 대상이다.

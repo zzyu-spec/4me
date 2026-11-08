@@ -1,7 +1,7 @@
 import {getPlannerDatabase} from '../firebase-context.mjs';
 export async function account() {
   const sdk=await import('../firebase-vendor.js');
-  const response=await fetch('../firebase-config.json',{cache:'no-store'});
+  const response=await fetch(new URL('../firebase-config.json',import.meta.url),{cache:'no-store'});
   if(!response.ok)throw Error('계정 설정을 불러오지 못했어요.');
   const config=await response.json(),name='harugyeol-'+config.projectId;
   const app=sdk.getApps().find(x=>x.name===name)||sdk.initializeApp(config,name),auth=sdk.getAuth(app);
