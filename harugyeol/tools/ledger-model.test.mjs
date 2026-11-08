@@ -17,3 +17,9 @@ test('separate category lists, duplicate/blank protection, hide without rewritin
  const server=new Map(),sdk={doc:(db,...path)=>path.join('/'),runTransaction:async(db,fn)=>fn({get:async ref=>({exists:()=>server.has(ref),data:()=>server.get(ref)}),set:(ref,value)=>server.set(ref,structuredClone(value))})};s.context={sdk,db:{}};s.status=()=>{};await s.sync();assert.equal(Object.keys(s.data.categoryPending).length,0);assert.equal(server.get('users/categories/ledgerCategories/cat-pet').name,'반려동물');
  s.putCategory({...s.data.categories['cat-pet'],name:'펫'});const key='users/categories/ledgerCategories/cat-pet';server.set(key,{...server.get(key),name:'동물',revision:2});await s.sync();assert(s.categoryConflicts.has('cat-pet'));s.resolveCategory('cat-pet',false);assert.equal(s.data.categories['cat-pet'].name,'동물');assert.equal(s.data.backups[0].categories['cat-pet'].name,'펫');s.close();
 });
+test('requested ordered defaults preserve saved IDs, custom categories and historical entries',()=>{
+ assert.deepEqual(categoryOptions({},'expense').map(x=>x.name),['식비','교통비','여가/취미','쇼핑','미용','의료','교육','경조사','저축']);
+ assert.deepEqual(categoryOptions({},'income').map(x=>x.name),['용돈','급여','이자','환급']);
+ const data={items:{legacy:item({category:'카페·간식'})},categories:{transport:{id:'default-expense-2',kind:'expense',name:'교통',deleted:true},interest:{id:'default-income-3',kind:'income',name:'이자',deleted:true},custom:{id:'custom-income',kind:'income',name:'기타 수입',deleted:false}}};
+ const before=structuredClone(data);assert(!categoryOptions(data,'expense').some(x=>x.name==='교통비'));assert(categoryOptions(data,'expense').some(x=>x.name==='여가/취미'));assert(!categoryOptions(data,'income').some(x=>x.name==='이자'));assert(categoryOptions(data,'income').some(x=>x.name==='환급'));assert(categoryOptions(data,'income').some(x=>x.name==='기타 수입'));assert.deepEqual(data,before);
+});
