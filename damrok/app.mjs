@@ -83,3 +83,12 @@ queueMicrotask(()=>cloud.start());
 $('#railaccount').onclick=()=>$('#accountbtn').click();
 
 const pressDrag=installPressDrag({getScope:()=>store?store.uid+':'+epoch:null,getItem:id=>items.find(i=>i.id===id),onDrop:async(id,target,mode)=>{try{if(!store)return;const batch=planDrop(items,id,target,mode);if(mode==='inside')recordOpen.add(target);await saveRecords(batch);toast(mode==='inside'?'항목 안으로 옮겼어요.':'순서를 바꿨어요.')}catch(e){toast(e.message)}},onHold:id=>{const item=items.find(i=>i.id===id&&!i.deleted);if(!item)return;$('#reader').close();openEditor(item.type,item);$('#locationoptions').hidden=false;$('#locationtrigger').setAttribute('aria-expanded','true')}});
+
+// Close only deliberate backdrop clicks, never clicks or drags originating inside.
+for(const dialog of document.querySelectorAll('dialog')){
+ let backdropStart=null;
+ const outside=e=>{const r=dialog.getBoundingClientRect();return e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom};
+ dialog.addEventListener('pointerdown',e=>{backdropStart=e.target===dialog&&e.button===0&&outside(e)?{x:e.clientX,y:e.clientY}:null});
+ dialog.addEventListener('pointercancel',()=>{backdropStart=null});
+ dialog.addEventListener('click',e=>{const start=backdropStart;backdropStart=null;if(start&&e.target===dialog&&outside(e)&&Math.hypot(e.clientX-start.x,e.clientY-start.y)<10){e.preventDefault();dialog.close()}});
+}
