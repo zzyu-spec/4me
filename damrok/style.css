@@ -25,3 +25,5 @@
 #editor input,#editor select,#editor textarea,#loginmodal input{font-size:16px}
 #editor input:focus,#editor select:focus,#editor textarea:focus,#loginmodal input:focus{outline:none;border-color:#89956e;box-shadow:0 0 0 2px #89956e26}
 @media(max-width:650px){dialog input,dialog select,dialog textarea,.searchbox input{font-size:16px}dialog input:focus,dialog select:focus,dialog textarea:focus,.searchbox input:focus{outline:none;border-color:#89956e;box-shadow:0 0 0 2px #89956e26}}
+
+#editor[data-child="true"]:has(#locationfield:not([hidden])) .form-grid{display:grid}#locationfield select{width:100%;max-width:100%;text-overflow:ellipsis}
