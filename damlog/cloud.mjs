@@ -1,7 +1,7 @@
 import {account,friendly as baseFriendly} from './account.mjs';
 import {validateItem} from './store.mjs';
 const hash=async data=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(data)))].map(n=>n.toString(16).padStart(2,'0')).join('');
-export const friendly=e=>/permission-denied/.test(e?.code||'')?'damrok 데이터베이스의 담록 전용 규칙 적용이 필요합니다. 기기 자료는 유지됩니다.':baseFriendly(e);
+export const friendly=e=>/permission-denied/.test(e?.code||'')?'damlog 데이터베이스의 담록 전용 규칙 적용이 필요합니다. 기기 자료는 유지됩니다.':baseFriendly(e);
 export class Cloud{
  constructor({onAuth,onStatus,onChange,onConflict,onReady=()=>{},loadAccount=account}){Object.assign(this,{onAuth,onStatus,onChange,onConflict,onReady,loadAccount});this.ready=false;this.readyState='idle';this.initializing=null;this.generation=0;this.busy=false;this.queue=false;this.conflicts=new Map();this.requestTimer=null}
  status(t){this.onStatus(t)}

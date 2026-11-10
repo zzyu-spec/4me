@@ -1,5 +1,5 @@
-// Authentication shares the existing project and app name. Firestore is Damrok-only.
-export const DATABASE_ID='damrok';
+// Authentication shares the existing project and app name. Firestore is Damlog-only.
+export const DATABASE_ID='damlog';
 const databases=new WeakMap();
 export async function account(){
  const sdk=await import('../firebase-vendor.js');
@@ -17,4 +17,4 @@ export async function legacyDatabase(sdk,app){
  const {getPlannerDatabase}=await import('../firebase-context.mjs');
  return getPlannerDatabase(sdk,app);
 }
-export const friendly=e=>/permission-denied/.test(e?.code||'')?'damrok 데이터베이스의 담록 전용 규칙을 확인해 주세요. 기기 자료는 유지됩니다.':/not-found/.test(e?.code||'')?'damrok 데이터베이스가 있는지 확인해 주세요. 기기 자료는 유지됩니다.':/auth\//.test(e?.code||'')?'이메일·비밀번호와 이메일 인증을 확인해 주세요.':/network|unavailable|offline/.test((e?.code||'')+' '+(e?.message||''))?'연결을 확인해 주세요. 기기 자료는 유지됩니다.':e?.message||'처리하지 못했습니다. 기기 자료는 유지됩니다.';
+export const friendly=e=>/permission-denied/.test(e?.code||'')?'damlog 데이터베이스의 담록 전용 규칙을 확인해 주세요. 기기 자료는 유지됩니다.':/not-found/.test(e?.code||'')?'damlog 데이터베이스가 있는지 확인해 주세요. 기기 자료는 유지됩니다.':/auth\//.test(e?.code||'')?'이메일·비밀번호와 이메일 인증을 확인해 주세요.':/network|unavailable|offline/.test((e?.code||'')+' '+(e?.message||''))?'연결을 확인해 주세요. 기기 자료는 유지됩니다.':e?.message||'처리하지 못했습니다. 기기 자료는 유지됩니다.';

@@ -4,9 +4,9 @@
 
 - 사이트: https://zzyu-spec.github.io/4me/damlog/ (이전 /damrok/ 주소도 호환)
 - Firebase 프로젝트: `harugyeol-e7866`
-- **담록의 정상 읽기·쓰기 대상: 이름 지정 데이터베이스 `damrok`**
+- **담록의 정상 읽기·쓰기 대상: 이름 지정 데이터베이스 `damlog`**
 - Authentication: 기존 프로젝트의 앱 이름 `harugyeol-harugyeol-e7866`과 이메일 인증 계정을 공유
-- 연결: `damlog/account.mjs`에서 `initializeFirestore(app, options, 'damrok')`를 호출
+- 연결: `damlog/account.mjs`에서 `initializeFirestore(app, options, 'damlog')`를 호출
 
 `ledger/account.mjs`, `firebase-context.mjs`, 루트 `firebase.json`·`firestore.rules`, 하루결·아르닛·가계부 코드는 변경하지 않습니다. 기본 DB에 남은 담록 원본도 삭제하지 않습니다. 예외적으로 사용자가 **이전 서버 확인**을 누를 때만 `(default)`의 본인 담록 경로를 읽기 전용으로 확인합니다.
 
@@ -15,24 +15,24 @@
 이 작업 연결에는 Firebase 관리자 인증이 없습니다. **실제 DB 생성 여부·기존 사용자 자료·규칙 게시·운영 서버의 동기화 성공은 이 문서의 코드 배포만으로 검증된 것이 아닙니다.**
 
 1. [Firebase Console](https://console.firebase.google.com/project/harugyeol-e7866/firestore)에서 프로젝트 `harugyeol-e7866`을 엽니다.
-2. **Firestore Database의 데이터베이스 선택기에서 `damrok`을 선택**합니다. 없다면 데이터베이스 ID를 정확히 `damrok`으로 지정하여 만듭니다. 프로젝트의 기존 운영 위치를 확인해 위치를 선택합니다.
-3. 선택된 DB가 **`damrok`**인지 확인한 뒤 **규칙** 탭을 엽니다.
+2. **Firestore Database의 데이터베이스 선택기에서 `damlog`을 선택**합니다. 없다면 데이터베이스 ID를 정확히 `damlog`으로 지정하여 만듭니다. 프로젝트의 기존 운영 위치를 확인해 위치를 선택합니다.
+3. 선택된 DB가 **`damlog`**인지 확인한 뒤 **규칙** 탭을 엽니다.
 4. [`damlog/firestore.rules`](https://github.com/zzyu-spec/4me/blob/main/damlog/firestore.rules)의 전체 내용을 복사하고 **게시**합니다.
-5. **`(default)`나 `arnit`의 규칙에 붙여넣지 마세요.** 담록 전용 규칙은 `damrok`에서만 본인 경로를 허용합니다. 다른 서비스의 기존 규칙은 그대로 둡니다.
+5. **`(default)`나 `arnit`의 규칙에 붙여넣지 마세요.** 담록 전용 규칙은 `damlog`에서만 본인 경로를 허용합니다. 다른 서비스의 기존 규칙은 그대로 둡니다.
 6. 담록에서 기존 계정으로 로그인하고 **다시 동기화**를 누릅니다. 서버 확인이 성공해야 **계정에 저장됨**이 표시됩니다.
 
 이미 Firebase CLI 관리자 인증이 연결돼 있다면 저장소 루트에서 다음 두 명령으로 **담록 전용 구성만** 게시할 수 있습니다.
 
 ```sh
-cd damrok
+cd damlog
 firebase deploy --only firestore:rules --project harugyeol-e7866 --config firebase.json
 ```
 
-`damlog/firebase.json`은 `database: "damrok"`만 선언합니다. 루트 구성으로 전체 배포하거나 기본 DB 규칙을 수정할 필요가 없습니다.
+`damlog/firebase.json`은 `database: "damlog"`만 선언합니다. 루트 구성으로 전체 배포하거나 기본 DB 규칙을 수정할 필요가 없습니다.
 
 ## 2. 경로와 접근 범위
 
-`damrok` DB 내부에서 기존 경로를 유지합니다.
+`damlog` DB 내부에서 기존 경로를 유지합니다.
 
 - 자료: `/users/{uid}/damrokEntries/{id}`
 - 사진·파일 원본 정보: `/users/{uid}/damrokAssets/{sha256}`
@@ -51,11 +51,11 @@ firebase deploy --only firestore:rules --project harugyeol-e7866 --config fireba
 - 이전 IndexedDB: `damrok-archive-account-<uid>`
 - 새 전용 IndexedDB: `damrok-archive-account-<uid>-db-damrok`
 
-새 저장소를 따로 사용하므로 `(default)`의 revision을 `damrok`에 잘못 재사용하지 않습니다. 이전 저장소는 읽기 전용으로 확인하고 **삭제하거나 초기화하지 않습니다.** 새 DB를 열 때 이전 계정 저장소를 자동으로 덮어쓰지 않습니다.
+새 저장소를 따로 사용하므로 `(default)`의 revision을 `damlog`에 잘못 재사용하지 않습니다. 이전 저장소는 읽기 전용으로 확인하고 **삭제하거나 초기화하지 않습니다.** 새 DB를 열 때 이전 계정 저장소를 자동으로 덮어쓰지 않습니다.
 
 1. 로그인 후 오른쪽의 **이전 자료 확인 · 가져오기**를 누릅니다. 기기에 자료가 발견되면 버튼에 건수가 표시됩니다.
 2. **기기 자료 백업 · 가져오기**를 누릅니다. 사진과 파일을 포함한 원본 JSON 백업을 먼저 내려받습니다.
-3. 확인 창에서 복사를 승인합니다. 새 전용 기기 저장소에 복사하고 `damrok` 계정 동기화를 요청합니다.
+3. 확인 창에서 복사를 승인합니다. 새 전용 기기 저장소에 복사하고 `damlog` 계정 동기화를 요청합니다.
 
 ### `(default)` 서버의 기존 담록 자료
 
@@ -82,7 +82,7 @@ firebase deploy --only firestore:rules --project harugyeol-e7866 --config fireba
 ## 4. 동기화 상태
 
 - **기기에 저장됨**: IndexedDB 저장 완료. 서버 확인 전입니다.
-- **동기화 중**: `damrok` 서버와 자료·원본을 교환 중입니다.
+- **동기화 중**: `damlog` 서버와 자료·원본을 교환 중입니다.
 - **계정에 저장됨**: 서버 조회/트랜잭션이 성공했고 남은 기기 변경이 없습니다.
 - **동기화 실패**: 권한·연결·저장 또는 충돌 문제입니다. 기기 기록은 유지되며 안내를 확인하고 재시도할 수 있습니다.
 
@@ -103,7 +103,7 @@ firebase deploy --only firestore:rules --project harugyeol-e7866 --config fireba
 - 새 배포는 페이지가 보이는 동안 약 30초마다 확인하며, 탭 복귀·인터넷 재연결 때 바로 재확인합니다. 배포 버전과 HTML이 일치하는 경우에만 적용합니다.
 - 편집 창·로그인 창 등 열린 창, 처리 중인 저장·동기화, 해결 전 충돌이 있으면 자동 새로고침을 보류합니다. 저장을 마치고 창을 닫으면 자동 적용합니다. 오프라인에서는 자동 새로고침하지 않습니다.
 - 각 배포에서 내용 해시로 `damrok/releases/<hash>/` 파일과 `release.json`을 생성합니다. 화면과 모듈·스타일이 같은 버전을 사용하며, 공유 Firebase 파일도 새 버전 주소로 불러옵니다. 사용자 자료를 삭제하거나 브라우저 저장소를 초기화하지 않습니다.
-- 데이터 변경은 기존 `damrok` 실시간 구독으로 감지합니다. 탭 복귀·연결 복구 때 재동기화하고, 페이지가 보일 때 45초 주기로 누락도 재확인합니다. 서버 권한과 연결이 정상이어야 기기 간 동기화됩니다.
+- 데이터 변경은 기존 `damlog` 실시간 구독으로 감지합니다. 탭 복귀·연결 복구 때 재동기화하고, 페이지가 보일 때 45초 주기로 누락도 재확인합니다. 서버 권한과 연결이 정상이어야 기기 간 동기화됩니다.
 - 열어둔 기록 보기에도 다른 기기 수정 사항이 반영됩니다. 편집 중인 폼의 입력은 바꾸지 않으며, 오래된 버전으로 저장하려 하면 기존 충돌 보호를 적용합니다.
 
 자동 업데이트 검사를 재현하려면 저장소 루트에서:
@@ -150,4 +150,4 @@ npm --prefix damrok/tests run test:pages
 
 ## Damlog로 이름 변경
 
-소스 폴더는 `damlog/`입니다. 실제 DB는 복사·검증 전까지 `damrok`을 유지합니다. 새 DB 준비와 이전 방법은 [RENAME.md](./RENAME.md)를 확인하세요.
+소스 폴더는 `damlog/`입니다. 실제 DB 연결은 사용자가 복사 검증 성공을 확인한 뒤 `damlog`로 전환했습니다. 기존 `damrok` DB와 기기 저장 키는 유지합니다. 새 DB 준비와 이전 방법은 [RENAME.md](./RENAME.md)를 확인하세요.

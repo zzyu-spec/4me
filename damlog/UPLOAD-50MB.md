@@ -4,8 +4,8 @@
 
 서버의 기존 8MB 규칙을 유지한 상태에서는 큰 파일이 기기에만 저장될 수 있습니다. 계정 동기화를 사용하려면 Firebase 관리자 계정으로 아래 작업이 필요합니다. 이 작업에서 서버 규칙은 직접 게시하지 않았습니다.
 
-1. https://console.firebase.google.com/project/harugyeol-e7866/firestore/databases/damrok/rules 에 접속합니다.
-2. 프로젝트 harugyeol-e7866, 데이터베이스 **damrok**을 선택했는지 확인합니다. `(default)`를 선택하지 마세요.
+1. https://console.firebase.google.com/project/harugyeol-e7866/firestore/databases/damlog/rules 에 접속합니다.
+2. 프로젝트 harugyeol-e7866, 데이터베이스 **damlog**을 선택했는지 확인합니다. `(default)`를 선택하지 마세요.
 3. 기존 게시 규칙을 별도로 복사해 보관한 후 이 저장소의 `damlog/firestore.rules` 전체 내용을 규칙 편집기에 붙여넣고 게시합니다.
 4. 8MB 초과 파일을 올리고 다른 브라우저의 같은 계정에서 내려받은 원본과 비교합니다.
 

@@ -6,7 +6,7 @@
 
 ### 코드·변경 범위
 
-- 정상 연결은 `damlog/account.mjs`의 `initializeFirestore(app, options, 'damrok')`를 사용합니다.
+- 정상 연결은 `damlog/account.mjs`의 `initializeFirestore(app, options, 'damlog')`를 사용합니다.
 - `(default)` 연결은 명시적으로 실행하는 `damlog/migration.mjs`의 읽기 전용 이전 도구에서만 요청합니다.
 - `ledger/account.mjs`, `firebase-context.mjs`, 루트 `firebase.json`·`firestore.rules` 및 다른 서비스 파일의 변경이 없음을 확인했습니다.
 - 모듈 JavaScript 구문 검사와 Git 공백 오류 검사를 통과했습니다.
@@ -105,3 +105,9 @@ CHROMIUM_BIN=/usr/bin/chromium npm test
 - `page-node.test.mjs`: 기존 본문/이전 내용 보존, 독립 부모 ID·글 형식·본문 왕복, 이름 변경에도 연결 유지, 잘못된 순환 관계에서 무한 반복 방지 검사 통과.
 - `child-pages.cjs`: 운영과 같은 `/4me/` 경로의 두 브라우저 + 모형 Firebase에서 공간 > 부모 페이지 > 하위 페이지/글 > 더 안쪽 글, 독립 문서 저장과 부모 본문 불변, 열기/상위 돌아가기, 이름 변경, 자동 자식 목록 반영, 수정·새로고침·검색·백업·취소·모바일 화면, 섹션 편집 컨트롤 부재를 확인했습니다. JavaScript 오류 0건입니다.
 - 이 결과는 모형 서버를 이용한 기능 검사이며 실제 사용자 데이터나 운영 Firebase 인증·동기화 성공을 새로 검증한 것은 아닙니다.
+
+## damlog 데이터베이스로 연결 전환
+
+사용자가 관리자 복사/검증 명령의 `verified: true` 결과를 확인한 후 정상 연결의 DB ID와 규칙 배포 설정을 `damlog`로 변경했습니다. 공유 프로젝트와 Authentication, 컬렉션 경로, 앱 IndexedDB 키는 유지했습니다. 기존 `damrok` DB는 삭제하지 않았습니다.
+
+`damlog/tests/database-cutover.cjs`에서 모의 Firebase로 다음을 확인했습니다: 기존 기기 저장소와 복사된 서버 revision 보존, 정상 읽기/쓰기 전부 `damlog` 대상, 두 브라우저 수정 반영, 사용자 분리, 로그아웃 시 표시 자료 제거. 운영 Firebase 사용자 로그인과 서버 동기화를 직접 테스트한 결과는 아닙니다. 실제 계정에서 모든 기기의 이전 탭을 새로고침한 뒤 자료·파일 원본을 확인해야 합니다.
