@@ -16,6 +16,8 @@ export function build() {
   }
   cpSync(path.join(root,'.nojekyll'),path.join(output,'.nojekyll'));
   createDamrokRelease(root,output);
+  // Damlog is the new public address; both paths share origin-scoped storage and auth.
+  cpSync(path.join(output,'damrok'),path.join(output,'damlog'),{recursive:true});
   return output;
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

@@ -10,5 +10,5 @@ export class Migration{
  async importRecords(records,source){const x=this.context(),result=await mergeLegacy(x.store,records,source,x.guard);x.guard();await this.cloud.onChange();this.cloud.sync();return result}
 }
 export function downloadBackup(records,label='legacy'){
- const clean=records.map(validateItem),url=URL.createObjectURL(new Blob([JSON.stringify({format:'damrok-backup',version:2,source:label,exported:new Date().toISOString(),items:clean})],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='damrok-'+label+'-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);
+ const clean=records.map(validateItem),url=URL.createObjectURL(new Blob([JSON.stringify({format:'damrok-backup',version:2,source:label,exported:new Date().toISOString(),items:clean})],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='damlog-'+label+'-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);
 }
