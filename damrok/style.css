@@ -27,3 +27,9 @@
 @media(max-width:650px){dialog input,dialog select,dialog textarea,.searchbox input{font-size:16px}dialog input:focus,dialog select:focus,dialog textarea:focus,.searchbox input:focus{outline:none;border-color:#89956e;box-shadow:0 0 0 2px #89956e26}}
 
 #editor[data-child="true"]:has(#locationfield:not([hidden])) .form-grid{display:grid}#locationfield select{width:100%;max-width:100%;text-overflow:ellipsis}
+
+/* A quiet dashboard and an always-visible mobile navigation rail. */
+.calendar,.sync-panel,#see-favorites{display:none!important}.mobile-rail{display:none}
+@media(max-width:650px){.mobile-rail{position:fixed;inset:0 auto 0 0;width:56px;display:flex;flex-direction:column;align-items:center;gap:10px;padding:15px 5px max(16px,env(safe-area-inset-bottom));background:#f8f7f4;border-right:1px solid #e9e8e1;z-index:8}.mobile-rail>button{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;min-height:47px;width:44px;padding:7px 2px;border-radius:9px;color:#7d856d}.mobile-rail>button>span{font-size:9px}.mobile-rail>button.active{background:#e9ecdf;color:#596b3e}.mobile-rail #railaccount{margin-top:auto}.mobile-rail #mobilemenu{position:static;display:grid;box-shadow:none;background:transparent;border:0;width:42px;height:40px;min-height:40px;margin-bottom:4px}.mobile-rail svg{width:21px;height:21px}main{margin-left:56px;padding-left:12px;padding-right:12px;min-width:0}.quick-actions>button{font-size:10px}.page-title{gap:10px}.page-title p{max-width:220px}.searchbox{min-width:0}.dashboard{min-width:0}.main-column,.right-column{min-width:0}.favorite-grid{gap:8px;padding:8px}.card-title{padding:10px 8px;gap:5px}.card-title svg{width:16px}.backup-row{flex-wrap:wrap;gap:10px}.backup-row span{margin-left:0}body.menu-open .mobile-rail{visibility:hidden}}
+
+.quick-actions{grid-template-columns:repeat(5,minmax(0,1fr))}@media(max-width:980px){.quick-actions{grid-template-columns:repeat(3,minmax(0,1fr))}}

@@ -23,7 +23,7 @@ service cloud.firestore {
           && e.revision is int && e.revision >= 1
           && e.updatedAt is string && e.updatedAt.size() <= 40
           && ((e.type == 'link' && e.url is string && e.url.size() <= 12000 && e.url.matches('^https?://.+'))
-            || (e.type in ['image','file'] && e.imageId is string && e.imageId.matches('^(image|file)-[0-9a-f]{64}$') && e.filename is string && e.filename.size() <= 250) || e.type in ['page','space']);
+            || (e.type in ['image','file'] && e.imageId is string && e.imageId.matches('^(image|file)-[0-9a-f]{64}$') && e.filename is string && e.filename.size() <= 1560) || e.type in ['page','space']);
       }
       allow read: if owner(uid);
       allow create: if owner(uid) && validEntry() && request.resource.data.revision == 1;
@@ -36,10 +36,10 @@ service cloud.firestore {
           && request.resource.data.keys().hasOnly(['chunkCount', 'characters'])
           && request.resource.data.chunkCount is int
           && request.resource.data.chunkCount >= 1
-          && request.resource.data.chunkCount <= 25
+          && request.resource.data.chunkCount <= 156
           && request.resource.data.characters is int
           && request.resource.data.characters > 0
-          && request.resource.data.characters <= 11200000;
+          && request.resource.data.characters <= 70000000;
       }
       allow read: if owner(uid);
       allow create: if owner(uid) && validManifest();
@@ -48,11 +48,11 @@ service cloud.firestore {
       match /chunks/{index} {
         function validChunk() {
           return assetId.matches('^(image|file)-[0-9a-f]{64}$')
-            && index.matches('^[0-9]{1,2}$')
+            && index.matches('^[0-9]{1,3}$')
             && request.resource.data.keys().hasOnly(['index', 'data'])
             && request.resource.data.index is int
             && request.resource.data.index >= 0
-            && request.resource.data.index < 25
+            && request.resource.data.index < 156
             && request.resource.data.data is string
             && request.resource.data.data.size() <= 450000;
         }
