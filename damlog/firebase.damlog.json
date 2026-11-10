@@ -1,0 +1,3 @@
+{
+  "firestore": [{"database": "damlog", "rules": "firestore.rules"}]
+}

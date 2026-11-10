@@ -2,11 +2,11 @@
 
 담록은 **담아 기록하다**의 줄임말입니다.
 
-- 사이트: https://zzyu-spec.github.io/4me/damrok/
+- 사이트: https://zzyu-spec.github.io/4me/damlog/ (이전 /damrok/ 주소도 호환)
 - Firebase 프로젝트: `harugyeol-e7866`
 - **담록의 정상 읽기·쓰기 대상: 이름 지정 데이터베이스 `damrok`**
 - Authentication: 기존 프로젝트의 앱 이름 `harugyeol-harugyeol-e7866`과 이메일 인증 계정을 공유
-- 연결: `damrok/account.mjs`에서 `initializeFirestore(app, options, 'damrok')`를 호출
+- 연결: `damlog/account.mjs`에서 `initializeFirestore(app, options, 'damrok')`를 호출
 
 `ledger/account.mjs`, `firebase-context.mjs`, 루트 `firebase.json`·`firestore.rules`, 하루결·아르닛·가계부 코드는 변경하지 않습니다. 기본 DB에 남은 담록 원본도 삭제하지 않습니다. 예외적으로 사용자가 **이전 서버 확인**을 누를 때만 `(default)`의 본인 담록 경로를 읽기 전용으로 확인합니다.
 
@@ -17,7 +17,7 @@
 1. [Firebase Console](https://console.firebase.google.com/project/harugyeol-e7866/firestore)에서 프로젝트 `harugyeol-e7866`을 엽니다.
 2. **Firestore Database의 데이터베이스 선택기에서 `damrok`을 선택**합니다. 없다면 데이터베이스 ID를 정확히 `damrok`으로 지정하여 만듭니다. 프로젝트의 기존 운영 위치를 확인해 위치를 선택합니다.
 3. 선택된 DB가 **`damrok`**인지 확인한 뒤 **규칙** 탭을 엽니다.
-4. [`damrok/firestore.rules`](https://github.com/zzyu-spec/4me/blob/main/damrok/firestore.rules)의 전체 내용을 복사하고 **게시**합니다.
+4. [`damlog/firestore.rules`](https://github.com/zzyu-spec/4me/blob/main/damlog/firestore.rules)의 전체 내용을 복사하고 **게시**합니다.
 5. **`(default)`나 `arnit`의 규칙에 붙여넣지 마세요.** 담록 전용 규칙은 `damrok`에서만 본인 경로를 허용합니다. 다른 서비스의 기존 규칙은 그대로 둡니다.
 6. 담록에서 기존 계정으로 로그인하고 **다시 동기화**를 누릅니다. 서버 확인이 성공해야 **계정에 저장됨**이 표시됩니다.
 
@@ -28,7 +28,7 @@ cd damrok
 firebase deploy --only firestore:rules --project harugyeol-e7866 --config firebase.json
 ```
 
-`damrok/firebase.json`은 `database: "damrok"`만 선언합니다. 루트 구성으로 전체 배포하거나 기본 DB 규칙을 수정할 필요가 없습니다.
+`damlog/firebase.json`은 `database: "damrok"`만 선언합니다. 루트 구성으로 전체 배포하거나 기본 DB 규칙을 수정할 필요가 없습니다.
 
 ## 2. 경로와 접근 범위
 
@@ -109,7 +109,7 @@ firebase deploy --only firestore:rules --project harugyeol-e7866 --config fireba
 자동 업데이트 검사를 재현하려면 저장소 루트에서:
 
 ```sh
-node --test scripts/build-site.test.mjs damrok/tests/updates.test.mjs
+node --test scripts/build-site.test.mjs damlog/tests/updates.test.mjs
 ```
 
 실제 브라우저 두 개와 모형 Firebase를 사용하는 자동 반영 검사:
@@ -144,6 +144,10 @@ npm --prefix damrok/tests test
 재현 검사:
 
 ```sh
-node --test damrok/tests/page-node.test.mjs
+node --test damlog/tests/page-node.test.mjs
 npm --prefix damrok/tests run test:pages
 ```
+
+## Damlog로 이름 변경
+
+소스 폴더는 `damlog/`입니다. 실제 DB는 복사·검증 전까지 `damrok`을 유지합니다. 새 DB 준비와 이전 방법은 [RENAME.md](./RENAME.md)를 확인하세요.

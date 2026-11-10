@@ -12,17 +12,17 @@ function walk(directory) {
 test('every service file retains its exact bytes and previous public path', () => {
   const output=build();
   let count=0;
-  for (const [source,target] of [['harugyeol',''],['shared',''],['arnit','taste-drawer'],['damrok','damrok']]) {
+  for (const [source,target] of [['harugyeol',''],['shared',''],['arnit','taste-drawer'],['damlog','damlog']]) {
     for (const file of walk(path.join(root,source))) {
       const relative=path.relative(path.join(root,source),file);
-      if(!(source==='damrok'&&relative==='index.html'))assert.deepEqual(readFileSync(path.join(output,target,relative)),readFileSync(file),relative);
+      if(!(source==='damlog'&&relative==='index.html'))assert.deepEqual(readFileSync(path.join(output,target,relative)),readFileSync(file),relative);
       count++;
     }
   }
   const release=JSON.parse(readFileSync(path.join(output,'damrok/release.json'),'utf8'));
   const copies=walk(path.join(output,'damrok/releases',release.version));
-  const aliasFiles=walk(path.join(output,'damlog'));
-  for(const file of aliasFiles){const relative=path.relative(path.join(output,'damlog'),file);assert.deepEqual(readFileSync(file),readFileSync(path.join(output,'damrok',relative)),'Damlog alias: '+relative);}
+  const aliasFiles=walk(path.join(output,'damrok'));
+  for(const file of aliasFiles){const relative=path.relative(path.join(output,'damrok'),file);assert.deepEqual(readFileSync(file),readFileSync(path.join(output,'damlog',relative)),'Damlog alias: '+relative);}
   assert.equal(walk(output).length,count+2+copies.length+aliasFiles.length,'only release assets and the identical Damlog alias are added');
   const html=readFileSync(path.join(output,'damrok/index.html'),'utf8');
   assert.match(release.version,/^[a-f0-9]{64}$/);

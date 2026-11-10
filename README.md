@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | `harugyeol/` | 하루결, 가계부(`ledger/`), 알림 서버(`functions/`), 관련 문서·개발 도구 | `/4me/`, `/4me/ledger/` |
 | `arnit/` | 아르닛(기존 `taste-drawer/`) | `/4me/taste-drawer/` |
-| `damrok/` | 담록 | `/4me/damrok/` |
+| `damlog/` | 담록 (Damlog) | `/4me/damlog/` (이전 `/4me/damrok/` 호환) |
 | `shared/` | 공통 Firebase SDK 번들, SDK 고지, 공개 웹 설정 | 기존 루트 파일 주소 |
 | `scripts/` | 전체 사이트 빌드·구조 검증 | 배포하지 않는 개발 도구 |
 
@@ -19,7 +19,7 @@ node --test scripts/build-site.test.mjs
 python3 -m http.server 8000 --directory _site
 ```
 
-하루결은 http://localhost:8000/ , 아르닛은 http://localhost:8000/taste-drawer/ , 담록은 http://localhost:8000/damrok/ 에서 확인합니다.
+하루결은 http://localhost:8000/ , 아르닛은 http://localhost:8000/taste-drawer/ , 담록은 http://localhost:8000/damlog/ 에서 확인합니다.
 원본 폴더를 직접 웹 루트로 서빙하지 않습니다. 기존 상대 경로는 빌드 결과를 기준으로 동작합니다.
 
 ## 기존 테스트·배포 도구

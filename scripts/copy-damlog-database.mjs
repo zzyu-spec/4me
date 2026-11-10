@@ -1,0 +1,16 @@
+import {createHash} from 'node:crypto';
+import {pathToFileURL} from 'node:url';
+function canonical(v){if(v===null||typeof v!=='object')return v;if(Buffer.isBuffer(v))return {bytes:v.toString('base64')};if(v instanceof Date)return {date:v.toISOString()};if(typeof v.seconds==='number'&&typeof v.nanoseconds==='number')return {seconds:v.seconds,nanoseconds:v.nanoseconds};if(typeof v.latitude==='number'&&typeof v.longitude==='number')return {latitude:v.latitude,longitude:v.longitude};if(Array.isArray(v))return v.map(canonical);if(Object.getPrototypeOf(v)!==Object.prototype&&Object.getPrototypeOf(v)!==null)throw Error('지원하지 않는 값이 있습니다. 자동 이전을 중단합니다.');return Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])]))}
+const digest=data=>createHash('sha256').update(JSON.stringify(canonical(data))).digest('hex');
+async function walk(db,visit){const roots=await db.listCollections();if(roots.some(c=>c.id!=='users'))throw Error('users 외 컬렉션이 있습니다. 이 전용 DB의 범위를 먼저 확인해 주세요.');async function collection(c){for(const ref of await c.listDocuments()){const snap=await ref.get();if(snap.exists)await visit(ref.path,snap.data());for(const child of await ref.listCollections())await collection(child)}}for(const c of roots)await collection(c)}
+export async function copyDatabase({source,target,mode='dry-run'}){
+ if(!['dry-run','copy','verify'].includes(mode))throw Error('모드를 확인해 주세요.');
+ const expected=new Map();let missing=0,copied=0;
+ await walk(source,async(path,data)=>{const hash=digest(data);expected.set(path,hash);const destination=target.doc(path),existing=await destination.get();if(existing.exists){if(digest(existing.data())!==hash)throw Error('다른 내용이 대상 DB에 있습니다: '+path+' (덮어쓰지 않습니다)')}else{missing++;if(mode==='verify')throw Error('대상에 없는 자료: '+path);if(mode==='copy'){await destination.create(data);copied++}}});
+ if(mode==='dry-run')return {mode,documents:expected.size,missing,copied:0,verified:false};
+ const current=new Map();await walk(source,async(path,data)=>current.set(path,digest(data)));if(current.size!==expected.size||[...expected].some(([p,h])=>current.get(p)!==h))throw Error('복사 중 원본이 변경되었습니다. 편집을 멈추고 다시 검증해 주세요.');
+ const actual=new Map();await walk(target,async(path,data)=>actual.set(path,digest(data)));if(actual.size!==expected.size||[...expected].some(([p,h])=>actual.get(p)!==h))throw Error('대상의 수 또는 원본 해시가 다릅니다. 앱 연결을 바꾸지 마세요.');
+ return {mode,documents:expected.size,copied,verified:true};
+}
+async function main(){const args=process.argv.slice(2);if(args.some(a=>!['--copy','--verify'].includes(a))||args.length>1)throw Error('사용법: node scripts/copy-damlog-database.mjs [--copy | --verify]');const mode=args[0]==='--copy'?'copy':args[0]==='--verify'?'verify':'dry-run';const {initializeApp,applicationDefault}=await import('firebase-admin/app'),{getFirestore}=await import('firebase-admin/firestore');const app=initializeApp({projectId:'harugyeol-e7866',credential:applicationDefault()});try{console.log(JSON.stringify(await copyDatabase({source:getFirestore(app,'damrok'),target:getFirestore(app,'damlog'),mode}),null,2))}finally{const{deleteApp}=await import('firebase-admin/app');await deleteApp(app)}}
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)main().catch(e=>{console.error('이전 중단: '+e.message+'\n원본은 변경/삭제하지 않았습니다. 부분 복사된 대상은 유지됩니다. 앱 연결을 바꾸지 마세요.');process.exitCode=1});

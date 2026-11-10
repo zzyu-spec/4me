@@ -1,8 +1,8 @@
 import {createHash} from 'node:crypto';
 import {readFileSync,writeFileSync,readdirSync,mkdirSync} from 'node:fs';
 import path from 'node:path';
-export function createDamrokRelease(root,output){
- const source=path.join(root,'damrok'),target=path.join(output,'damrok');
+export function createDamlogRelease(root,output){
+ const source=path.join(root,'damlog'),target=path.join(output,'damlog');
  const files=readdirSync(source).filter(f=>/\.(mjs|css|svg|html)$/.test(f)).sort();
  const digest=createHash('sha256');for(const file of files)digest.update(file+'\0').update(readFileSync(path.join(source,file)));
  for(const file of ['firebase-vendor.js','firebase-config.json','firebase-context.mjs'])digest.update(file+'\0').update(readFileSync(path.join(output,file)));

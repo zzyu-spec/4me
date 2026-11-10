@@ -6,14 +6,14 @@
 
 ### 코드·변경 범위
 
-- 정상 연결은 `damrok/account.mjs`의 `initializeFirestore(app, options, 'damrok')`를 사용합니다.
-- `(default)` 연결은 명시적으로 실행하는 `damrok/migration.mjs`의 읽기 전용 이전 도구에서만 요청합니다.
+- 정상 연결은 `damlog/account.mjs`의 `initializeFirestore(app, options, 'damrok')`를 사용합니다.
+- `(default)` 연결은 명시적으로 실행하는 `damlog/migration.mjs`의 읽기 전용 이전 도구에서만 요청합니다.
 - `ledger/account.mjs`, `firebase-context.mjs`, 루트 `firebase.json`·`firestore.rules` 및 다른 서비스 파일의 변경이 없음을 확인했습니다.
 - 모듈 JavaScript 구문 검사와 Git 공백 오류 검사를 통과했습니다.
 
 ### 두 독립 브라우저 + 데이터베이스를 구분하는 모형 Firebase
 
-실행 파일: `damrok/tests/named-db.cjs`, 모형 SDK: `damrok/tests/mock-sdk.mjs`.
+실행 파일: `damlog/tests/named-db.cjs`, 모형 SDK: `damlog/tests/mock-sdk.mjs`.
 
 - 일반 로그인·자료·사진 동기화의 모든 읽기·쓰기가 `damrok`을 사용하고, 일반 시작 시 `(default)` 읽기가 없음을 확인했습니다.
 - UID별 기기 저장소와 모형 서버 경로가 분리됐습니다. 다른 UID·비로그인 요청은 모형 SDK에서 차단됐습니다.
@@ -79,7 +79,7 @@ CHROMIUM_BIN=/usr/bin/chromium npm test
 ## 자동 반영 변경 검증
 
 - 빌드·업데이트 검사 6개 통과: 새 배포 감지, 편집/저장 중 보류, 중복 새로고침 방지, 오프라인/실패 시 유지, HTML 준비 대기, 앱/공유 파일 변경 시 자동 버전 생성과 기존 서비스 공개 경로 보존.
-- `damrok/tests/live-updates.cjs` 실제 브라우저 + 모형 Firebase 검사 통과: 수동 동기화 없이 5초 내 다른 브라우저 기록·열린 보기 갱신, 기존 주소에서 배포 감지, 작성 중 입력 보존, 저장 후 한 번 자동 새로고침, 원래 주소 복구, 새 버전에서 저장 내용 유지. JavaScript 오류 0건.
+- `damlog/tests/live-updates.cjs` 실제 브라우저 + 모형 Firebase 검사 통과: 수동 동기화 없이 5초 내 다른 브라우저 기록·열린 보기 갱신, 기존 주소에서 배포 감지, 작성 중 입력 보존, 저장 후 한 번 자동 새로고침, 원래 주소 복구, 새 버전에서 저장 내용 유지. JavaScript 오류 0건.
 - 새 배포 경로에서 기존 `named-db.cjs` 계정 분리·이전·로그아웃 검사 통과.
 - 배포용 기존 서비스 회귀 검사 27개 통과.
 - 실시간 변경 이벤트는 검사에서 모형 Firebase 이벤트로 전달했습니다. 실제 운영 Firestore 규칙·서버 동기화가 새로 검증된 것은 아닙니다. 기존에 명시한 운영 검증 한계는 그대로입니다.

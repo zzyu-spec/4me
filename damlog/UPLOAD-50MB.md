@@ -6,7 +6,7 @@
 
 1. https://console.firebase.google.com/project/harugyeol-e7866/firestore/databases/damrok/rules 에 접속합니다.
 2. 프로젝트 harugyeol-e7866, 데이터베이스 **damrok**을 선택했는지 확인합니다. `(default)`를 선택하지 마세요.
-3. 기존 게시 규칙을 별도로 복사해 보관한 후 이 저장소의 `damrok/firestore.rules` 전체 내용을 규칙 편집기에 붙여넣고 게시합니다.
+3. 기존 게시 규칙을 별도로 복사해 보관한 후 이 저장소의 `damlog/firestore.rules` 전체 내용을 규칙 편집기에 붙여넣고 게시합니다.
 4. 8MB 초과 파일을 올리고 다른 브라우저의 같은 계정에서 내려받은 원본과 비교합니다.
 
 UID 소유자 제한은 유지합니다. 변경된 상한은 manifest 70,000,000자, 156청크, 청크 번호 0~155입니다. 청크당 450,000자 제한은 유지합니다. 다른 서비스의 규칙은 수정하지 않습니다.
