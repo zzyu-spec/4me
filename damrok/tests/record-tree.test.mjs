@@ -1,0 +1,6 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {recordTree} from '../record-tree.mjs';import {encodeNode} from '../page-node.mjs';
+const id=n=>`${String(n).repeat(8)}-${String(n).repeat(4)}-${String(n).repeat(4)}-${String(n).repeat(4)}-${String(n).repeat(12)}`;
+const row=(n,parent=null)=>({id:id(n),title:String(n),type:'page',note:encodeNode({body:'내용',parentId:parent}),created:n});
+test('main roots exclude nested children and preserve sorted, independent branches',()=>{const a=row(1),b=row(2,a.id),c=row(3,b.id),d=row(4),list=[d,c,b,a],before=JSON.stringify(list),tree=recordTree(list);assert.deepEqual(tree.roots,[d,a]);assert.deepEqual(tree.children.get(a.id),[b]);assert.deepEqual(tree.children.get(b.id),[c]);assert.equal(JSON.stringify(list),before)});
+test('filtered/missing parents and legacy cycles never hide or duplicate records',()=>{const a=row(1,id(2)),b=row(2,id(1)),c=row(3,id(4)),tree=recordTree([a,b,c]);assert.equal(tree.roots.length,2);const seen=new Set(),stack=[...tree.roots];while(stack.length){const n=stack.pop();assert(!seen.has(n.id));seen.add(n.id);stack.push(...tree.children.get(n.id)||[])}assert.equal(seen.size,3);assert.deepEqual(recordTree([b]).roots,[b])});
