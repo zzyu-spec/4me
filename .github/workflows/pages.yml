@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test scripts/build-site.test.mjs damrok/tests/updates.test.mjs damrok/tests/sections.test.mjs damrok/tests/auth-ready.test.mjs damrok/tests/page-node.test.mjs
+      - run: node --test scripts/build-site.test.mjs damrok/tests/updates.test.mjs damrok/tests/sections.test.mjs damrok/tests/auth-ready.test.mjs damrok/tests/page-node.test.mjs damrok/tests/move-items.test.mjs
       - name: Run existing service regression tests on the public layout
         working-directory: _site
         run: node --test tools/ledger-model.test.mjs tools/push-worker.test.cjs tools/cloudshell-deploy.test.cjs functions/test/*.test.cjs
