@@ -21,7 +21,9 @@ test('every service file retains its exact bytes and previous public path', () =
   }
   const release=JSON.parse(readFileSync(path.join(output,'damrok/release.json'),'utf8'));
   const copies=walk(path.join(output,'damrok/releases',release.version));
-  assert.equal(walk(output).length,count+2+copies.length,'only the release manifest and versioned assets are added');
+  const aliasFiles=walk(path.join(output,'damlog'));
+  for(const file of aliasFiles){const relative=path.relative(path.join(output,'damlog'),file);assert.deepEqual(readFileSync(file),readFileSync(path.join(output,'damrok',relative)),'Damlog alias: '+relative);}
+  assert.equal(walk(output).length,count+2+copies.length+aliasFiles.length,'only release assets and the identical Damlog alias are added');
   const html=readFileSync(path.join(output,'damrok/index.html'),'utf8');
   assert.match(release.version,/^[a-f0-9]{64}$/);
   assert(html.includes('content="'+release.version+'"'));
