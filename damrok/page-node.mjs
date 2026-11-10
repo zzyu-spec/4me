@@ -10,5 +10,5 @@ export function encodeNode({body,sections=[],parentId=null,kind='page'}){
  if(note.length>100000)throw Error('페이지 저장 용량을 넘었어요. 입력은 유지됩니다. 내용을 다른 글로 나눠 주세요.');return note;
 }
 export const nodeText=note=>{const p=decodeNode(note),parts=[p.body],stack=[...p.sections];while(stack.length){const n=stack.pop();parts.push(n.title,n.text);stack.push(...n.children)}return parts.join('\n')};
-export function childrenOf(items,parentId){return items.filter(i=>i.type==='page'&&!i.deleted&&decodeNode(i.note).parentId===parentId).sort((a,b)=>a.created-b.created)}
-export function ancestorChain(items,item){const map=new Map(items.filter(i=>i.type==='page').map(i=>[i.id,i])),seen=new Set([item.id]),parents=[];let id=decodeNode(item.note).parentId;while(id&&!seen.has(id)){seen.add(id);const parent=map.get(id);if(!parent)break;parents.unshift(parent);id=decodeNode(parent.note).parentId}return parents}
+export function childrenOf(items,parentId){return items.filter(i=>i.type!=='space'&&!i.deleted&&decodeNode(i.note).parentId===parentId).sort((a,b)=>a.created-b.created)}
+export function ancestorChain(items,item){const map=new Map(items.filter(i=>i.type!=='space').map(i=>[i.id,i])),seen=new Set([item.id]),parents=[];let id=decodeNode(item.note).parentId;while(id&&!seen.has(id)){seen.add(id);const parent=map.get(id);if(!parent)break;parents.unshift(parent);id=decodeNode(parent.note).parentId}return parents}
