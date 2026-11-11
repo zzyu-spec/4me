@@ -10,3 +10,5 @@ user-entered characters fall back to the device's native Korean/system font.
 
 Upstream: https://github.com/orioncactus/pretendard
 Source: packages/pretendard/dist/web/variable/woff2/PretendardVariable.woff2
+
+ArnitUI-complete-ui.woff2 supplements all current interface copy, including subcategory examples. Editable controls use a complete system Korean font to prevent mixed glyph fallback for user-entered text.
