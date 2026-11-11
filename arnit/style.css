@@ -67,3 +67,27 @@ dialog[open]{max-height:76dvh}
 
 /* Editable text uses a complete native Korean font, without per-glyph subset fallback. */
 input,select,textarea,.field>input::placeholder,.field>textarea::placeholder{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',sans-serif}
+
+/* Warm dark palette. Personal photos and saved color chips retain their colors. */
+:root{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark;--bg:#211D1B;--card:#2B2522;--soft:#352D29;--accent:#D0A39F;--accent-dark:#BC8C87;--text:#F0E5DD;--muted:#BBAAA0;--line:#4B3E37;--brown:#D5B7A4;--rose-soft:#493530;--control-chevron:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23BBAAA0' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")}
+[data-theme=dark] :is(.sidebar,.topbar,.mobile-nav,.auth-card,.modal-header,.modal-footer){background:var(--bg);border-color:var(--line)}
+[data-theme=dark] :is(.button,.field>input,.field>select,.field>textarea,.toolbar input,.toolbar select,.category-row input,.quick-task input,.checklist-row,.goal-row,.bucket-summary,.home-main .group-meta,.empty,.menu-stack .button,.palette-editor input){background-color:var(--card);color:var(--text);border-color:var(--line)}
+[data-theme=dark] :is(.button.primary){background:var(--accent-dark);color:#211D1B;border-color:var(--accent-dark)}
+[data-theme=dark] :is(.button:hover,.icon-button:hover,.filter-chip.active,.sidebar nav a.active,.mobile-nav a.active,.view-switch button.active,.tags button,.quick-actions .button,.home-side .bucket-summary,.notice,.no-image.quote,.selected-tag){background:var(--soft);color:var(--text)}
+[data-theme=dark] :is(.global-search,.group-cover,.collage-preview>div,.preview-placeholder,.collage-shell,.button.subtle){background:var(--soft);border-color:var(--line);color:var(--text)}
+[data-theme=dark] :is(.sidebar nav a,.mobile-nav a,.field,.field-title,.filter-chip,.help,.auth-subtitle,.auth-card #authStatus,.home-heading p,.home-heading .eyebrow,.auth-brand,.group-meta p,.item-info p,.no-image p,.section-heading a,.text-button,.progress-caption,.sidebar-bottom,.folder-heading,.app-footer,.eyebrow,.group-menu,.view-switch button){color:var(--muted)}
+[data-theme=dark] .home-heading{background-image:linear-gradient(90deg,#211D1BEF,#211D1B88),url('assets/arnit-header.webp')}
+[data-theme=dark] .home-heading h1{color:var(--text)}
+[data-theme=dark] #authGate{background-image:linear-gradient(#211D1BB8,#211D1BB8),url('assets/arnit-header.webp')}
+[data-theme=dark] :is(.error-box,#cloudStatus[data-phase=error],#cloudStatus[data-phase=conflict]){background:#4A2E2B;color:#F3BDB4}
+[data-theme=dark] :is(.progress,.done-label){background:var(--soft);color:var(--text)}
+[data-theme=dark] :is(.card-heart,.avatar){background:var(--card);color:var(--accent)}
+[data-theme=dark] .collage-canvas{background-image:radial-gradient(var(--line) 1px,transparent 1px)}
+[data-theme=dark] .collage-tile{color:#332D2A}
+[data-theme=dark] dialog::backdrop{background:#0009}
+[data-theme=dark] .theme-toggle{color:var(--accent)}
+@media(max-width:600px){.topbar .theme-toggle{width:32px;min-width:32px}}
+[data-theme=dark] .quick-actions{background:var(--card);border-color:var(--line)}
+[data-theme=dark] .quick-actions .button svg{background:var(--soft);color:var(--accent)}
+@media(max-width:600px){[data-theme=dark] .quick-actions,[data-theme=dark] .quick-actions .button{background:transparent}}
