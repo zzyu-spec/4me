@@ -8,7 +8,9 @@
     "test:sections": "node --test sections.test.mjs",
     "test:auth": "node --test auth-ready.test.mjs && node auth-prefix.cjs",
     "test:pages": "node --test page-node.test.mjs && node child-pages.cjs",
-    "test:checklists": "node --test checklist.test.mjs && node checklist.cjs"
+    "test:checklists": "node --test checklist.test.mjs && node checklist.cjs",
+    "test:theme": "node theme.cjs",
+    "test:profile": "node profile.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"
