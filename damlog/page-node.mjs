@@ -1,12 +1,12 @@
 import {decodePage,encodePage} from './page-sections.mjs';
 const PREFIX='<!--damrok:page:v2-->\n',UUID=/^[a-f0-9-]{36}$/;
 export function decodeNode(note){
- if(note.startsWith(PREFIX)){try{const v=JSON.parse(note.slice(PREFIX.length));if(v.version!==2||typeof v.content!=='string'||!['page','post'].includes(v.kind)||(v.parentId!==null&&!UUID.test(v.parentId)))throw Error('Invalid page');return {...decodePage(v.content),parentId:v.parentId,kind:v.kind,...Number.isSafeInteger(v.order)?{order:v.order}:{}}}catch{/* Preserve unknown content as text. */}}
+ if(note.startsWith(PREFIX)){try{const v=JSON.parse(note.slice(PREFIX.length));if(v.version!==2||typeof v.content!=='string'||!['page','post'].includes(v.kind)||(v.parentId!==null&&!UUID.test(v.parentId)))throw Error('Invalid page');return {...decodePage(v.content),parentId:v.parentId,kind:v.kind,...v.checklist===true?{checklist:true}:{},...Number.isSafeInteger(v.order)?{order:v.order}:{}}}catch{/* Preserve unknown content as text. */}}
  return {...decodePage(note),parentId:null,kind:'page'};
 }
-export function encodeNode({body,sections=[],parentId=null,kind='page',order=null}){
+export function encodeNode({body,sections=[],parentId=null,kind='page',order=null,checklist=false}){
  if(!['page','post'].includes(kind)||(parentId!==null&&!UUID.test(parentId)))throw Error('페이지 위치를 확인해 주세요.');
- const content=encodePage(body,sections),note=parentId===null&&kind==='page'&&order===null?content:PREFIX+JSON.stringify({version:2,content,parentId,kind,...Number.isSafeInteger(order)?{order}:{}});
+ const content=encodePage(body,sections),note=parentId===null&&kind==='page'&&order===null&&!checklist?content:PREFIX+JSON.stringify({version:2,content,parentId,kind,...checklist?{checklist:true}:{},...Number.isSafeInteger(order)?{order}:{}});
  if(note.length>100000)throw Error('페이지 저장 용량을 넘었어요. 입력은 유지됩니다. 내용을 다른 글로 나눠 주세요.');return note;
 }
 export const nodeText=note=>{const p=decodeNode(note),parts=[p.body],stack=[...p.sections];while(stack.length){const n=stack.pop();parts.push(n.title,n.text);stack.push(...n.children)}return parts.join('\n')};

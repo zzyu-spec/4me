@@ -1,5 +1,5 @@
 {
-  "name": "damrok-browser-checks",
+  "name": "damlog-browser-checks",
   "private": true,
   "scripts": {
     "test": "node named-db.cjs",
@@ -7,7 +7,8 @@
     "test:live": "node live-updates.cjs",
     "test:sections": "node --test sections.test.mjs",
     "test:auth": "node --test auth-ready.test.mjs && node auth-prefix.cjs",
-    "test:pages": "node --test page-node.test.mjs && node child-pages.cjs"
+    "test:pages": "node --test page-node.test.mjs && node child-pages.cjs",
+    "test:checklists": "node --test checklist.test.mjs && node checklist.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"
