@@ -1,4 +1,4 @@
-const C='harugyeol-v243';
+const C='harugyeol-v244';
 const A=['./','index.html','release-notes.js','ledger/','ledger/index.html','ledger/app.mjs','ledger/style.css','ledger/manifest.webmanifest','ledger/model.mjs','ledger/store.mjs','ledger/account.mjs','ledger/journal-bridge.mjs','push.js','push-storage.js','push-worker.js','push-config.json','functions/reminder-model.js','photos.js','weather.js','music.js','music.css','planner-enhancements.js','planner-enhancements.css','timeline-flow.js','timeline-flow.css','home-banner.webp','cloud.js','firebase-context.mjs','firebase-vendor.js','firebase-config.json','manifest.json','icon-192.png','icon-512.png',...['rose','sage','lavender','sky','butter','mono'].flatMap(theme=>[`manifest-${theme}.json`,`icons/${theme}-192.png`,`icons/${theme}-512.png`])];
 self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(A.map(path=>new Request(path,{cache:'reload'})))).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('harugyeol-')&&k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
