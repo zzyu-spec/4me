@@ -48,3 +48,18 @@
 [data-record-dialog="spending"] .journal-record-dialog-actions>.small{min-width:0;font-size:11px;line-height:1.5}
 .journal-detail-panel>.ledger-journal-summary{margin:18px 0;padding:16px 0;border-top:1px solid var(--line)}
 @media(max-width:360px){[data-record-dialog="spending"]>.panel{padding:16px}.ledger-journal-actions>.btn{padding:10px 12px}}
+
+/* Keep gratitude editor inside the visible viewport above the iOS keyboard. */
+[data-record-dialog="gratitude"]{inset:auto 0 auto;top:var(--record-viewport-top,0px);height:var(--record-viewport-height,100dvh);padding:8px 12px;box-sizing:border-box}
+[data-record-dialog="gratitude"]>.panel{display:flex;flex-direction:column;gap:12px;width:min(520px,100%);max-height:calc(var(--record-viewport-height,100dvh) - 16px);overflow:hidden;padding:16px;box-sizing:border-box}
+[data-record-dialog="gratitude"] .modal-heading{flex:none;margin:0;gap:12px}[data-record-dialog="gratitude"] .modal-heading>h2{margin:0}
+[data-record-dialog="gratitude"] .journal-record-card{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain}
+[data-record-dialog="gratitude"] .journal-record-content{padding:0;min-width:0}
+[data-record-dialog="gratitude"] #journalGratitude{display:block;box-sizing:border-box;min-height:96px;max-width:100%;margin:0;font-size:16px;line-height:1.65;transform:none}
+[data-record-dialog="gratitude"] .journal-record-dialog-actions{flex:none;margin:0;gap:10px;padding-top:10px;border-top:1px solid var(--line)}
+[data-record-dialog="gratitude"] .journal-record-dialog-actions>.small{font-size:11px;line-height:1.4;min-width:0}
+[data-record-dialog="gratitude"] .journal-record-dialog-actions>.btn{min-height:44px;flex:none}
+/* This face has only Regular: use its real strokes for text, retaining heading emphasis. */
+:root[data-font="myoeun-heullim"]{font-synthesis:none}
+:root[data-font="myoeun-heullim"] :is(small,.small,.muted,.diary-readonly,.journal-detail-text,input,textarea,select,option,summary){font-weight:400;font-synthesis:none}
+:root[data-font="myoeun-heullim"] :is(h1,h2,h3,h4,h5,h6,.routine-group-head,.todo-section-folder>summary,.home-summary-card>strong){font-synthesis:weight}
