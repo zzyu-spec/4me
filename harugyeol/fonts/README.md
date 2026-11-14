@@ -10,3 +10,14 @@
 - 전체 문자 매핑 11439개를 보존합니다. 포함되지 않은 문자는 시스템 서체로 표시합니다.
 
 하루결 설정 → 화면·메뉴 → 서체에서 기본 서체/카페24 써라운드 에어를 선택할 수 있습니다. 기존 fontChoice 필드에 cafe24-air 옵션만 추가하며 기본·이전 값은 그대로 유지합니다. 기존 사용자 기록·사진·테마·다른 서비스 서체는 변경하지 않습니다.
+
+## 그리운 묘은흘림체
+
+- 표시명: 묘은흘림체, 내부 이름: Griun Myoeun Heullim (Regular)
+- 저작권: 타이비 & 김효은 / TypeE. Corp. & Kim Hyo Eun
+- 공식 안내: https://www.griun.co.kr/fonts/myoeunheullim
+- 원본: https://github.com/projectnoonnu/2601-1/blob/079e89b3fb973eb37d56f1e367cc922b91c29cca/Griun_MyoeunHeullim-Rg.woff2
+- SHA-256: `f95e62aef19e6af0e30ebe13708887ec03f14b2325c557fbca729a0aedcea38c`
+- 파일 수정·서브셋 없이 원본 WOFF2를 보존합니다. 원본 메타데이터의 저작권·수정 제한 고지는 GriunMyoeunHeullim-NOTICE.txt에 동봉합니다. Cafe24 폰트의 OFL 라이선스를 이 파일에 적용하지 않습니다.
+- 전체 글리프 매핑 11361개, 현대 한글 11,172자 및 숫자를 확인했습니다.
+- fontChoice: myoeun-heullim. 기존 기본/Cafe24 선택과 기록을 변경하지 않습니다.
