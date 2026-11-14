@@ -1,0 +1,8 @@
+// Select your own signing Team in Xcode. No private credentials belong here.
+HARUGYEOL_BUNDLE_BASE = com.zzyuspec.harugyeol
+IPHONEOS_DEPLOYMENT_TARGET = 16.0
+SWIFT_VERSION = 5.0
+CODE_SIGN_STYLE = Automatic
+TARGETED_DEVICE_FAMILY = 1,2
+SDKROOT = iphoneos
+SUPPORTED_PLATFORMS = iphoneos iphonesimulator

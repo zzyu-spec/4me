@@ -1,0 +1,368 @@
+// !$*UTF8*$!
+{
+	"archiveVersion" = "1";
+	"classes" = {
+	};
+	"objectVersion" = "56";
+	"objects" = {
+		"33F6EF03795119E2B0E0C02A" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Shared/Models.swift";
+			"sourceTree" = "<group>";
+		};
+		"B29340F47FFB7B2E13C9DC98" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Shared/AccountStore.swift";
+			"sourceTree" = "<group>";
+		};
+		"0C447CE4C5D72CDAFE4AF6E7" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Shared/WidgetService.swift";
+			"sourceTree" = "<group>";
+		};
+		"59CD19414A46680F7F11FF73" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "App/HarugyeolApp.swift";
+			"sourceTree" = "<group>";
+		};
+		"5B5DD2902FC865E468E8D559" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "sourcecode.swift";
+			"path" = "Widget/HarugyeolWidget.swift";
+			"sourceTree" = "<group>";
+		};
+		"90CE2AF7529F25A64B449529" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Shared/WidgetProjection.js";
+			"sourceTree" = "<group>";
+		};
+		"E04A8683CFFB8272C0275C34" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "../../harugyeol/functions/reminder-model.js";
+			"sourceTree" = "<group>";
+		};
+		"478C530B00B6AAB7150C8FD5" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text";
+			"path" = "Config/FirebaseConfig.plist";
+			"sourceTree" = "<group>";
+		};
+		"B5B89880D0AE0D513F7FF55C" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.xcconfig";
+			"path" = "Config/Shared.xcconfig";
+			"sourceTree" = "<group>";
+		};
+		"7C0858417E8594228ED3CE0A" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "Config/App-Info.plist";
+			"sourceTree" = "<group>";
+		};
+		"471BB4483074DFC3395FB45A" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "Config/Widget-Info.plist";
+			"sourceTree" = "<group>";
+		};
+		"6B7C5F8432B968C375C9E6E7" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "Config/App.entitlements";
+			"sourceTree" = "<group>";
+		};
+		"7DDFA112A427BE4855A50400" = {
+			"isa" = "PBXFileReference";
+			"lastKnownFileType" = "text.plist.xml";
+			"path" = "Config/Widget.entitlements";
+			"sourceTree" = "<group>";
+		};
+		"AE0042EC290704DA7E641B97" = {
+			"isa" = "PBXFileReference";
+			"explicitFileType" = "wrapper.application";
+			"path" = "HarugyeolWidgetApp.app";
+			"sourceTree" = "BUILT_PRODUCTS_DIR";
+		};
+		"F340BBA9E1CF0E68C148238F" = {
+			"isa" = "PBXFileReference";
+			"explicitFileType" = "wrapper.app-extension";
+			"path" = "HarugyeolWidgetExtension.appex";
+			"sourceTree" = "BUILT_PRODUCTS_DIR";
+		};
+		"0A3E27B8CA818264D75C8D81" = {
+			"isa" = "PBXGroup";
+			"children" = ("AE0042EC290704DA7E641B97", "F340BBA9E1CF0E68C148238F");
+			"name" = "Products";
+			"sourceTree" = "<group>";
+		};
+		"0D6E4079E36703EBD37C0072" = {
+			"isa" = "PBXGroup";
+			"children" = ("33F6EF03795119E2B0E0C02A", "B29340F47FFB7B2E13C9DC98", "0C447CE4C5D72CDAFE4AF6E7", "59CD19414A46680F7F11FF73", "5B5DD2902FC865E468E8D559", "90CE2AF7529F25A64B449529", "E04A8683CFFB8272C0275C34", "478C530B00B6AAB7150C8FD5", "B5B89880D0AE0D513F7FF55C", "7C0858417E8594228ED3CE0A", "471BB4483074DFC3395FB45A", "6B7C5F8432B968C375C9E6E7", "7DDFA112A427BE4855A50400", "0A3E27B8CA818264D75C8D81");
+			"sourceTree" = "<group>";
+		};
+		"1241936D4DD3AAD68FE7BFBD" = {
+			"isa" = "PBXContainerItemProxy";
+			"containerPortal" = "244210E48437B6556980A702";
+			"proxyType" = "1";
+			"remoteGlobalIDString" = "9C81F10E9448B0F4D6EA8DB4";
+			"remoteInfo" = "HarugyeolWidgetExtension";
+		};
+		"8CE3E71EF8635D2BF27913BB" = {
+			"isa" = "PBXTargetDependency";
+			"target" = "9C81F10E9448B0F4D6EA8DB4";
+			"targetProxy" = "1241936D4DD3AAD68FE7BFBD";
+		};
+		"FAE608D04BA82A38D1FB0D81" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "F340BBA9E1CF0E68C148238F";
+			"settings" = {
+				"ATTRIBUTES" = ("RemoveHeadersOnCopy");
+			};
+		};
+		"8A1EED22144C3F04485A69EE" = {
+			"isa" = "PBXCopyFilesBuildPhase";
+			"buildActionMask" = "2147483647";
+			"dstPath" = "";
+			"dstSubfolderSpec" = "13";
+			"files" = ("FAE608D04BA82A38D1FB0D81");
+			"name" = "Embed App Extensions";
+			"runOnlyForDeploymentPostprocessing" = "0";
+		};
+		"1CB5DE0C0B0662B89C4E97A9" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "33F6EF03795119E2B0E0C02A";
+		};
+		"7817D6A35AECA3B6DE28A591" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "B29340F47FFB7B2E13C9DC98";
+		};
+		"82EDCE90F6CD3F6A7AF79DEE" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "0C447CE4C5D72CDAFE4AF6E7";
+		};
+		"52DD27061F8B589F76EB6041" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "59CD19414A46680F7F11FF73";
+		};
+		"0D25A9A11793BE91427A3D7D" = {
+			"isa" = "PBXSourcesBuildPhase";
+			"buildActionMask" = "2147483647";
+			"files" = ("1CB5DE0C0B0662B89C4E97A9", "7817D6A35AECA3B6DE28A591", "82EDCE90F6CD3F6A7AF79DEE", "52DD27061F8B589F76EB6041");
+			"runOnlyForDeploymentPostprocessing" = "0";
+		};
+		"D9FA9520C0E3236C83D06FAA" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "90CE2AF7529F25A64B449529";
+		};
+		"58A2A8D2A79EF8E19723A2B9" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "E04A8683CFFB8272C0275C34";
+		};
+		"1EB25C7AD1CEB9F53154A98A" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "478C530B00B6AAB7150C8FD5";
+		};
+		"DBBFC30291D55CDD50B10B32" = {
+			"isa" = "PBXResourcesBuildPhase";
+			"buildActionMask" = "2147483647";
+			"files" = ("D9FA9520C0E3236C83D06FAA", "58A2A8D2A79EF8E19723A2B9", "1EB25C7AD1CEB9F53154A98A");
+			"runOnlyForDeploymentPostprocessing" = "0";
+		};
+		"609A52E5B24E5BB109D44D04" = {
+			"isa" = "PBXFrameworksBuildPhase";
+			"buildActionMask" = "2147483647";
+			"files" = ();
+			"runOnlyForDeploymentPostprocessing" = "0";
+		};
+		"6CCC433D89988F3E2859E1DB" = {
+			"isa" = "XCBuildConfiguration";
+			"baseConfigurationReference" = "B5B89880D0AE0D513F7FF55C";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "HarugyeolWidgetApp";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "$(HARUGYEOL_BUNDLE_BASE).widgetapp";
+				"INFOPLIST_FILE" = "Config/App-Info.plist";
+				"CODE_SIGN_ENTITLEMENTS" = "Config/App.entitlements";
+				"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				"GENERATE_INFOPLIST_FILE" = "NO";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+			};
+			"name" = "Debug";
+		};
+		"60E450B27FD0D02DD5AA6B63" = {
+			"isa" = "XCBuildConfiguration";
+			"baseConfigurationReference" = "B5B89880D0AE0D513F7FF55C";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "HarugyeolWidgetApp";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "$(HARUGYEOL_BUNDLE_BASE).widgetapp";
+				"INFOPLIST_FILE" = "Config/App-Info.plist";
+				"CODE_SIGN_ENTITLEMENTS" = "Config/App.entitlements";
+				"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				"GENERATE_INFOPLIST_FILE" = "NO";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+			};
+			"name" = "Release";
+		};
+		"20F43D9D939EC47957738E24" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = ("6CCC433D89988F3E2859E1DB", "60E450B27FD0D02DD5AA6B63");
+			"defaultConfigurationIsVisible" = "0";
+			"defaultConfigurationName" = "Release";
+		};
+		"772ACF71B65A1A591157DD86" = {
+			"isa" = "PBXNativeTarget";
+			"buildConfigurationList" = "20F43D9D939EC47957738E24";
+			"buildPhases" = ("0D25A9A11793BE91427A3D7D", "DBBFC30291D55CDD50B10B32", "609A52E5B24E5BB109D44D04", "8A1EED22144C3F04485A69EE");
+			"buildRules" = ();
+			"dependencies" = ("8CE3E71EF8635D2BF27913BB");
+			"name" = "HarugyeolWidgetApp";
+			"productName" = "HarugyeolWidgetApp";
+			"productReference" = "AE0042EC290704DA7E641B97";
+			"productType" = "com.apple.product-type.application";
+		};
+		"E59F3D2B026D5AA983FECD54" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "33F6EF03795119E2B0E0C02A";
+		};
+		"0ADF81AD90A5687D063BFCBF" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "B29340F47FFB7B2E13C9DC98";
+		};
+		"6D10CCFF8487987D0389E7C1" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "0C447CE4C5D72CDAFE4AF6E7";
+		};
+		"C316CD471952EAEEC9A16C46" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "5B5DD2902FC865E468E8D559";
+		};
+		"A055D8E1ABD0BEDA97775F25" = {
+			"isa" = "PBXSourcesBuildPhase";
+			"buildActionMask" = "2147483647";
+			"files" = ("E59F3D2B026D5AA983FECD54", "0ADF81AD90A5687D063BFCBF", "6D10CCFF8487987D0389E7C1", "C316CD471952EAEEC9A16C46");
+			"runOnlyForDeploymentPostprocessing" = "0";
+		};
+		"9974C2E9ACC134BF715E1ACB" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "90CE2AF7529F25A64B449529";
+		};
+		"F7091D149C5843E7E65FF8D5" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "E04A8683CFFB8272C0275C34";
+		};
+		"2FDF9E5B649DF8F06C24CE10" = {
+			"isa" = "PBXBuildFile";
+			"fileRef" = "478C530B00B6AAB7150C8FD5";
+		};
+		"D80180040DEC65BA2BF0D97E" = {
+			"isa" = "PBXResourcesBuildPhase";
+			"buildActionMask" = "2147483647";
+			"files" = ("9974C2E9ACC134BF715E1ACB", "F7091D149C5843E7E65FF8D5", "2FDF9E5B649DF8F06C24CE10");
+			"runOnlyForDeploymentPostprocessing" = "0";
+		};
+		"2A0F719EC2CCA5A46FE531DF" = {
+			"isa" = "PBXFrameworksBuildPhase";
+			"buildActionMask" = "2147483647";
+			"files" = ();
+			"runOnlyForDeploymentPostprocessing" = "0";
+		};
+		"FA1E4B2D9BAC8226DB842F78" = {
+			"isa" = "XCBuildConfiguration";
+			"baseConfigurationReference" = "B5B89880D0AE0D513F7FF55C";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "HarugyeolWidgetExtension";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "$(HARUGYEOL_BUNDLE_BASE).widgetapp.extension";
+				"INFOPLIST_FILE" = "Config/Widget-Info.plist";
+				"CODE_SIGN_ENTITLEMENTS" = "Config/Widget.entitlements";
+				"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				"GENERATE_INFOPLIST_FILE" = "NO";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+			};
+			"name" = "Debug";
+		};
+		"562BBFF855120BCB36F6BE35" = {
+			"isa" = "XCBuildConfiguration";
+			"baseConfigurationReference" = "B5B89880D0AE0D513F7FF55C";
+			"buildSettings" = {
+				"PRODUCT_NAME" = "HarugyeolWidgetExtension";
+				"PRODUCT_BUNDLE_IDENTIFIER" = "$(HARUGYEOL_BUNDLE_BASE).widgetapp.extension";
+				"INFOPLIST_FILE" = "Config/Widget-Info.plist";
+				"CODE_SIGN_ENTITLEMENTS" = "Config/Widget.entitlements";
+				"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				"GENERATE_INFOPLIST_FILE" = "NO";
+				"APPLICATION_EXTENSION_API_ONLY" = "YES";
+				"SKIP_INSTALL" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+			};
+			"name" = "Release";
+		};
+		"4D1188E9D7E4EF440BF42DBC" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = ("FA1E4B2D9BAC8226DB842F78", "562BBFF855120BCB36F6BE35");
+			"defaultConfigurationIsVisible" = "0";
+			"defaultConfigurationName" = "Release";
+		};
+		"9C81F10E9448B0F4D6EA8DB4" = {
+			"isa" = "PBXNativeTarget";
+			"buildConfigurationList" = "4D1188E9D7E4EF440BF42DBC";
+			"buildPhases" = ("A055D8E1ABD0BEDA97775F25", "D80180040DEC65BA2BF0D97E", "2A0F719EC2CCA5A46FE531DF");
+			"buildRules" = ();
+			"dependencies" = ();
+			"name" = "HarugyeolWidgetExtension";
+			"productName" = "HarugyeolWidgetExtension";
+			"productReference" = "F340BBA9E1CF0E68C148238F";
+			"productType" = "com.apple.product-type.app-extension";
+		};
+		"433548979C024CC63B5F3B8D" = {
+			"isa" = "XCBuildConfiguration";
+			"baseConfigurationReference" = "B5B89880D0AE0D513F7FF55C";
+			"buildSettings" = {
+				"CLANG_ENABLE_MODULES" = "YES";
+				"CLANG_ENABLE_OBJC_ARC" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+			};
+			"name" = "Debug";
+		};
+		"B800A40FDE6F0A0218D9BCD2" = {
+			"isa" = "XCBuildConfiguration";
+			"baseConfigurationReference" = "B5B89880D0AE0D513F7FF55C";
+			"buildSettings" = {
+				"CLANG_ENABLE_MODULES" = "YES";
+				"CLANG_ENABLE_OBJC_ARC" = "YES";
+				"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+			};
+			"name" = "Release";
+		};
+		"A9D611CBB74DE5A90A5674D4" = {
+			"isa" = "XCConfigurationList";
+			"buildConfigurations" = ("433548979C024CC63B5F3B8D", "B800A40FDE6F0A0218D9BCD2");
+			"defaultConfigurationIsVisible" = "0";
+			"defaultConfigurationName" = "Release";
+		};
+		"244210E48437B6556980A702" = {
+			"isa" = "PBXProject";
+			"attributes" = {
+				"BuildIndependentTargetsInParallel" = "YES";
+				"LastUpgradeCheck" = "1600";
+			};
+			"buildConfigurationList" = "A9D611CBB74DE5A90A5674D4";
+			"compatibilityVersion" = "Xcode 14.0";
+			"developmentRegion" = "ko";
+			"hasScannedForEncodings" = "0";
+			"knownRegions" = ("ko", "en", "Base");
+			"mainGroup" = "0D6E4079E36703EBD37C0072";
+			"productRefGroup" = "0A3E27B8CA818264D75C8D81";
+			"projectDirPath" = "";
+			"projectRoot" = "";
+			"targets" = ("772ACF71B65A1A591157DD86", "9C81F10E9448B0F4D6EA8DB4");
+		};
+	};
+	"rootObject" = "244210E48437B6556980A702";
+}
