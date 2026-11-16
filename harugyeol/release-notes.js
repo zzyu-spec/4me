@@ -2,11 +2,11 @@
 (() => {
   'use strict';
   const release = {
-    id: '2026-11-todo-due-today-1',
+    id: '2026-11-todo-calendar-completed-1',
     title: '하루결 업데이트',
     notes: [
-      '오늘이 마감인 미완료 투두를 오늘 홈에서 먼저 보여드려요.',
-      '오늘이 마감인 미완료 투두는 투두 화면에서 붉은색으로 표시해요.'
+      '투두의 주간·월간 달력 숫자는 ○ 완료 항목만 집계해요. 부분 완료 등 다른 상태는 포함하지 않아요.',
+      '완료 항목이 없는 날짜는 숫자를 표시하지 않아요.'
     ]
   };
   const key = 'harugyeol-release-seen';
