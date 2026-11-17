@@ -2,11 +2,11 @@
 (() => {
   'use strict';
   const release = {
-    id: '2026-11-todo-calendar-completed-1',
+    id: '2026-11-todo-calendar-unchecked-1',
     title: '하루결 업데이트',
     notes: [
-      '투두의 주간·월간 달력 숫자는 ○ 완료 항목만 집계해요. 부분 완료 등 다른 상태는 포함하지 않아요.',
-      '완료 항목이 없는 날짜는 숫자를 표시하지 않아요.'
+      '투두의 주간·월간 달력 숫자는 빈 체크박스 항목만 집계해요. ○·△·×·→는 모두 제외해요.',
+      '빈 체크박스 항목이 없는 날짜는 숫자를 표시하지 않아요.'
     ]
   };
   const key = 'harugyeol-release-seen';
